@@ -1,0 +1,805 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{349CAD13-D008-43C0-AED6-44E7F2AB0406}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Server</RootNamespace>
+    <AssemblyName>Server</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.30506.0\lib\net40\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.WebPages.OAuth, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.2.0.30506.0\lib\net40\Microsoft.Web.WebPages.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.30506.0\lib\net40\WebMatrix.WebData.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.AspNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.30506\lib\net40\System.Web.Http.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.3.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\AuthConfig.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Hubs\ServerHub.cs" />
+    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Adquirente.cs" />
+    <Compile Include="Models\agendamento_finalizado.cs" />
+    <Compile Include="Models\Amex.cs" />
+    <Compile Include="Models\arquivo_email.cs" />
+    <Compile Include="Models\atualizacao_log.cs" />
+    <Compile Include="Models\Bandeira.cs" />
+    <Compile Include="Models\Bandeira1.cs" />
+    <Compile Include="Models\BandeiraPos.cs" />
+    <Compile Include="Models\bandeiras1.cs" />
+    <Compile Include="Models\BandeirasTef.cs" />
+    <Compile Include="Models\BaneseCard.cs" />
+    <Compile Include="Models\Carga.cs" />
+    <Compile Include="Models\cel_rede_autorizadora.cs" />
+    <Compile Include="Models\Cielo.cs" />
+    <Compile Include="Models\CodigoEstabelecimento.cs" />
+    <Compile Include="Models\colreltrn.cs" />
+    <Compile Include="Models\columnmodel.cs" />
+    <Compile Include="Models\columnmodelpadro.cs" />
+    <Compile Include="Models\conccliente.cs" />
+    <Compile Include="Models\concessionaria.cs" />
+    <Compile Include="Models\ConciliacaoPagamento.cs" />
+    <Compile Include="Models\ConciliacaoPagamentosPos.cs" />
+    <Compile Include="Models\ConciliacaoRecebimento.cs" />
+    <Compile Include="Models\ConciliacaoVenda.cs" />
+    <Compile Include="Models\config_entries.cs" />
+    <Compile Include="Models\config_section.cs" />
+    <Compile Include="Models\confrel.cs" />
+    <Compile Include="Models\ConnectionString.cs" />
+    <Compile Include="Models\convbandeira.cs" />
+    <Compile Include="Models\convmodoentrada.cs" />
+    <Compile Include="Models\convproduto.cs" />
+    <Compile Include="Models\convtransaco.cs" />
+    <Compile Include="Models\conv_formapgto_cb.cs" />
+    <Compile Include="Models\ctl_exp.cs" />
+    <Compile Include="Models\ctl_sequencia.cs" />
+    <Compile Include="Models\DATABASECHANGELOG.cs" />
+    <Compile Include="Models\DATABASECHANGELOGLOCK.cs" />
+    <Compile Include="Models\DefGrupo.cs" />
+    <Compile Include="Models\defregional.cs" />
+    <Compile Include="Models\descmeiospag.cs" />
+    <Compile Include="Models\dtproperty.cs" />
+    <Compile Include="Models\email.cs" />
+    <Compile Include="Models\empresa.cs" />
+    <Compile Include="Models\empresa1.cs" />
+    <Compile Include="Models\estadotransacao.cs" />
+    <Compile Include="Models\estado_usuario.cs" />
+    <Compile Include="Models\FitCard.cs" />
+    <Compile Include="Models\formapgto_cartao_pre.cs" />
+    <Compile Include="Models\formapgto_cartao_recarga.cs" />
+    <Compile Include="Models\fornecedor.cs" />
+    <Compile Include="Models\GetNetSantander.cs" />
+    <Compile Include="Models\GoodCard.cs" />
+    <Compile Include="Models\GreenCard.cs" />
+    <Compile Include="Models\grp_concessionaria.cs" />
+    <Compile Include="Models\Grupo.cs" />
+    <Compile Include="Models\grupo_baseCnpj.cs" />
+    <Compile Include="Models\grupo_empresa.cs" />
+    <Compile Include="Models\historico_senhas.cs" />
+    <Compile Include="Models\Hora.cs" />
+    <Compile Include="Models\link.cs" />
+    <Compile Include="Models\Lixo.cs" />
+    <Compile Include="Models\log.cs" />
+    <Compile Include="Models\logacesso.cs" />
+    <Compile Include="Models\LogAcesso1.cs" />
+    <Compile Include="Models\logcb.cs" />
+    <Compile Include="Models\LogCbSuperFamilia.cs" />
+    <Compile Include="Models\logcb_det.cs" />
+    <Compile Include="Models\logcb_det_tmp.cs" />
+    <Compile Include="Models\logcb_tmp.cs" />
+    <Compile Include="Models\logconsulta.cs" />
+    <Compile Include="Models\logconsulta_tmp.cs" />
+    <Compile Include="Models\LogExceptionWinApp.cs" />
+    <Compile Include="Models\LogExecution.cs" />
+    <Compile Include="Models\LogExecutionException.cs" />
+    <Compile Include="Models\LoginAutenticacao.cs" />
+    <Compile Include="Models\LoginOperadora.cs" />
+    <Compile Include="Models\LogNotaDaGente.cs" />
+    <Compile Include="Models\logpp_consulta.cs" />
+    <Compile Include="Models\logpp_premiacao.cs" />
+    <Compile Include="Models\logrecargacel.cs" />
+    <Compile Include="Models\logrecargacel_tmp.cs" />
+    <Compile Include="Models\logservcel.cs" />
+    <Compile Include="Models\logtef.cs" />
+    <Compile Include="Models\logtef_tmp.cs" />
+    <Compile Include="Models\logvendaoffline.cs" />
+    <Compile Include="Models\log_cartao_pre.cs" />
+    <Compile Include="Models\log_cartao_pre_tmp.cs" />
+    <Compile Include="Models\log_eventos.cs" />
+    <Compile Include="Models\log_eventos_dados.cs" />
+    <Compile Include="Models\log_eventos_desc_eventos.cs" />
+    <Compile Include="Models\log_eventos_desc_origem.cs" />
+    <Compile Include="Models\Loja.cs" />
+    <Compile Include="Models\Mapping\AdquirenteMap.cs" />
+    <Compile Include="Models\Mapping\agendamento_finalizadoMap.cs" />
+    <Compile Include="Models\Mapping\AmexMap.cs" />
+    <Compile Include="Models\Mapping\arquivo_emailMap.cs" />
+    <Compile Include="Models\Mapping\atualizacao_logMap.cs" />
+    <Compile Include="Models\Mapping\Bandeira1Map.cs" />
+    <Compile Include="Models\Mapping\BandeiraMap.cs" />
+    <Compile Include="Models\Mapping\BandeiraPosMap.cs" />
+    <Compile Include="Models\Mapping\bandeiras1Map.cs" />
+    <Compile Include="Models\Mapping\BandeirasTefMap.cs" />
+    <Compile Include="Models\Mapping\BaneseCardMap.cs" />
+    <Compile Include="Models\Mapping\CargaMap.cs" />
+    <Compile Include="Models\Mapping\cel_rede_autorizadoraMap.cs" />
+    <Compile Include="Models\Mapping\CieloMap.cs" />
+    <Compile Include="Models\Mapping\CodigoEstabelecimentoMap.cs" />
+    <Compile Include="Models\Mapping\colreltrnMap.cs" />
+    <Compile Include="Models\Mapping\columnmodelMap.cs" />
+    <Compile Include="Models\Mapping\columnmodelpadroMap.cs" />
+    <Compile Include="Models\Mapping\concclienteMap.cs" />
+    <Compile Include="Models\Mapping\concessionariaMap.cs" />
+    <Compile Include="Models\Mapping\ConciliacaoPagamentoMap.cs" />
+    <Compile Include="Models\Mapping\ConciliacaoPagamentosPosMap.cs" />
+    <Compile Include="Models\Mapping\ConciliacaoRecebimentoMap.cs" />
+    <Compile Include="Models\Mapping\ConciliacaoVendaMap.cs" />
+    <Compile Include="Models\Mapping\config_entriesMap.cs" />
+    <Compile Include="Models\Mapping\config_sectionMap.cs" />
+    <Compile Include="Models\Mapping\confrelMap.cs" />
+    <Compile Include="Models\Mapping\ConnectionStringMap.cs" />
+    <Compile Include="Models\Mapping\convbandeiraMap.cs" />
+    <Compile Include="Models\Mapping\convmodoentradaMap.cs" />
+    <Compile Include="Models\Mapping\convprodutoMap.cs" />
+    <Compile Include="Models\Mapping\convtransacoMap.cs" />
+    <Compile Include="Models\Mapping\conv_formapgto_cbMap.cs" />
+    <Compile Include="Models\Mapping\ctl_expMap.cs" />
+    <Compile Include="Models\Mapping\ctl_sequenciaMap.cs" />
+    <Compile Include="Models\Mapping\DATABASECHANGELOGLOCKMap.cs" />
+    <Compile Include="Models\Mapping\DATABASECHANGELOGMap.cs" />
+    <Compile Include="Models\Mapping\DefGrupoMap.cs" />
+    <Compile Include="Models\Mapping\defregionalMap.cs" />
+    <Compile Include="Models\Mapping\descmeiospagMap.cs" />
+    <Compile Include="Models\Mapping\dtpropertyMap.cs" />
+    <Compile Include="Models\Mapping\emailMap.cs" />
+    <Compile Include="Models\Mapping\empresa1Map.cs" />
+    <Compile Include="Models\Mapping\empresaMap.cs" />
+    <Compile Include="Models\Mapping\estadotransacaoMap.cs" />
+    <Compile Include="Models\Mapping\estado_usuarioMap.cs" />
+    <Compile Include="Models\Mapping\FitCardMap.cs" />
+    <Compile Include="Models\Mapping\formapgto_cartao_preMap.cs" />
+    <Compile Include="Models\Mapping\formapgto_cartao_recargaMap.cs" />
+    <Compile Include="Models\Mapping\fornecedorMap.cs" />
+    <Compile Include="Models\Mapping\GetNetSantanderMap.cs" />
+    <Compile Include="Models\Mapping\GoodCardMap.cs" />
+    <Compile Include="Models\Mapping\GreenCardMap.cs" />
+    <Compile Include="Models\Mapping\grp_concessionariaMap.cs" />
+    <Compile Include="Models\Mapping\GrupoMap.cs" />
+    <Compile Include="Models\Mapping\grupo_baseCnpjMap.cs" />
+    <Compile Include="Models\Mapping\grupo_empresaMap.cs" />
+    <Compile Include="Models\Mapping\historico_senhasMap.cs" />
+    <Compile Include="Models\Mapping\HoraMap.cs" />
+    <Compile Include="Models\Mapping\linkMap.cs" />
+    <Compile Include="Models\Mapping\LixoMap.cs" />
+    <Compile Include="Models\Mapping\LogAcesso1Map.cs" />
+    <Compile Include="Models\Mapping\logacessoMap.cs" />
+    <Compile Include="Models\Mapping\logcbMap.cs" />
+    <Compile Include="Models\Mapping\LogCbSuperFamiliaMap.cs" />
+    <Compile Include="Models\Mapping\logcb_detMap.cs" />
+    <Compile Include="Models\Mapping\logcb_det_tmpMap.cs" />
+    <Compile Include="Models\Mapping\logcb_tmpMap.cs" />
+    <Compile Include="Models\Mapping\logconsultaMap.cs" />
+    <Compile Include="Models\Mapping\logconsulta_tmpMap.cs" />
+    <Compile Include="Models\Mapping\LogExceptionWinAppMap.cs" />
+    <Compile Include="Models\Mapping\LogExecutionExceptionMap.cs" />
+    <Compile Include="Models\Mapping\LogExecutionMap.cs" />
+    <Compile Include="Models\Mapping\LoginAutenticacaoMap.cs" />
+    <Compile Include="Models\Mapping\LoginOperadoraMap.cs" />
+    <Compile Include="Models\Mapping\logMap.cs" />
+    <Compile Include="Models\Mapping\LogNotaDaGenteMap.cs" />
+    <Compile Include="Models\Mapping\logpp_consultaMap.cs" />
+    <Compile Include="Models\Mapping\logpp_premiacaoMap.cs" />
+    <Compile Include="Models\Mapping\logrecargacelMap.cs" />
+    <Compile Include="Models\Mapping\logrecargacel_tmpMap.cs" />
+    <Compile Include="Models\Mapping\logservcelMap.cs" />
+    <Compile Include="Models\Mapping\logtefMap.cs" />
+    <Compile Include="Models\Mapping\logtef_tmpMap.cs" />
+    <Compile Include="Models\Mapping\logvendaofflineMap.cs" />
+    <Compile Include="Models\Mapping\log_cartao_preMap.cs" />
+    <Compile Include="Models\Mapping\log_cartao_pre_tmpMap.cs" />
+    <Compile Include="Models\Mapping\log_eventosMap.cs" />
+    <Compile Include="Models\Mapping\log_eventos_dadosMap.cs" />
+    <Compile Include="Models\Mapping\log_eventos_desc_eventosMap.cs" />
+    <Compile Include="Models\Mapping\log_eventos_desc_origemMap.cs" />
+    <Compile Include="Models\Mapping\LojaMap.cs" />
+    <Compile Include="Models\Mapping\MercaFornecedorMap.cs" />
+    <Compile Include="Models\Mapping\mercaMap.cs" />
+    <Compile Include="Models\Mapping\merca_deParaMap.cs" />
+    <Compile Include="Models\Mapping\modoentradaMap.cs" />
+    <Compile Include="Models\Mapping\MSpeer_lsnsMap.cs" />
+    <Compile Include="Models\Mapping\MSpeer_requestMap.cs" />
+    <Compile Include="Models\Mapping\MSpeer_responseMap.cs" />
+    <Compile Include="Models\Mapping\MSpub_identity_rangeMap.cs" />
+    <Compile Include="Models\Mapping\newsletterMap.cs" />
+    <Compile Include="Models\Mapping\nfe_entradaMap.cs" />
+    <Compile Include="Models\Mapping\nfe_saida1Map.cs" />
+    <Compile Include="Models\Mapping\nfe_saidaMap.cs" />
+    <Compile Include="Models\Mapping\nfe_saida_newMap.cs" />
+    <Compile Include="Models\Mapping\nivel_usuariosMap.cs" />
+    <Compile Include="Models\Mapping\NotaDaGenteMap.cs" />
+    <Compile Include="Models\Mapping\notificacao_iservicesMap.cs" />
+    <Compile Include="Models\Mapping\NutricashMap.cs" />
+    <Compile Include="Models\Mapping\OmniMap.cs" />
+    <Compile Include="Models\Mapping\OperadoraMap.cs" />
+    <Compile Include="Models\Mapping\PainelNotaDaGenteMap.cs" />
+    <Compile Include="Models\Mapping\parametro_recepcaoMap.cs" />
+    <Compile Include="Models\Mapping\PDVMap.cs" />
+    <Compile Include="Models\Mapping\pedidoMap.cs" />
+    <Compile Include="Models\Mapping\pessoaMap.cs" />
+    <Compile Include="Models\Mapping\PoliCardMap.cs" />
+    <Compile Include="Models\Mapping\produtoMap.cs" />
+    <Compile Include="Models\Mapping\produtosporredeMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_blob_triggersMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_calendarsMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_cron_triggersMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_fired_triggersMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_job_detailsMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_job_listenersMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_locksMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_paused_trigger_grpsMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_scheduler_stateMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_simple_triggersMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_triggersMap.cs" />
+    <Compile Include="Models\Mapping\qrtz_trigger_listenersMap.cs" />
+    <Compile Include="Models\Mapping\RecebimentoMap.cs" />
+    <Compile Include="Models\Mapping\RecebimentoParcelaMap.cs" />
+    <Compile Include="Models\Mapping\Recebimento_OriginalMap.cs" />
+    <Compile Include="Models\Mapping\Recebimento_TempMap.cs" />
+    <Compile Include="Models\Mapping\recepcao_emailMap.cs" />
+    <Compile Include="Models\Mapping\RedeCardMap.cs" />
+    <Compile Include="Models\Mapping\redeMap.cs" />
+    <Compile Include="Models\Mapping\RedeMedMap.cs" />
+    <Compile Include="Models\Mapping\regionalMap.cs" />
+    <Compile Include="Models\Mapping\SenhaNotaDaGenteMap.cs" />
+    <Compile Include="Models\Mapping\sitefweb_projectsMap.cs" />
+    <Compile Include="Models\Mapping\sitredeMap.cs" />
+    <Compile Include="Models\Mapping\SodexoMap.cs" />
+    <Compile Include="Models\Mapping\statisticMap.cs" />
+    <Compile Include="Models\Mapping\SuporteLojaMap.cs" />
+    <Compile Include="Models\Mapping\sysarticlecolumnMap.cs" />
+    <Compile Include="Models\Mapping\sysarticleMap.cs" />
+    <Compile Include="Models\Mapping\sysarticleupdateMap.cs" />
+    <Compile Include="Models\Mapping\sysdiagramMap.cs" />
+    <Compile Include="Models\Mapping\syspublicationMap.cs" />
+    <Compile Include="Models\Mapping\sysreplserverMap.cs" />
+    <Compile Include="Models\Mapping\sysschemaarticleMap.cs" />
+    <Compile Include="Models\Mapping\syssubscriptionMap.cs" />
+    <Compile Include="Models\Mapping\system_config_entriesMap.cs" />
+    <Compile Include="Models\Mapping\system_config_sectionMap.cs" />
+    <Compile Include="Models\Mapping\systranschemaMap.cs" />
+    <Compile Include="Models\Mapping\tabauditMap.cs" />
+    <Compile Include="Models\Mapping\TabExpMap.cs" />
+    <Compile Include="Models\Mapping\TabMeiosPagMap.cs" />
+    <Compile Include="Models\Mapping\tab_bandeirasMap.cs" />
+    <Compile Include="Models\Mapping\tab_cbMap.cs" />
+    <Compile Include="Models\Mapping\tab_codtrnweb_cbMap.cs" />
+    <Compile Include="Models\Mapping\tab_formapagto_cbMap.cs" />
+    <Compile Include="Models\Mapping\tab_tipodoc_cbMap.cs" />
+    <Compile Include="Models\Mapping\TaxaAdministracaoMap.cs" />
+    <Compile Include="Models\Mapping\tbAdquirenteMap.cs" />
+    <Compile Include="Models\Mapping\tbBancoParametroMap.cs" />
+    <Compile Include="Models\Mapping\tbBandeiraTefMap.cs" />
+    <Compile Include="Models\Mapping\tbContaCorrenteMap.cs" />
+    <Compile Include="Models\Mapping\tbContaCorrente_tbLoginAdquirenteEmpresaMap.cs" />
+    <Compile Include="Models\Mapping\tbEstadoTransacaoTef1Map.cs" />
+    <Compile Include="Models\Mapping\tbEstadoTransacaoTefMap.cs" />
+    <Compile Include="Models\Mapping\tbExecucaoLogMap.cs" />
+    <Compile Include="Models\Mapping\tbExtratoMap.cs" />
+    <Compile Include="Models\Mapping\tbIPTefMap.cs" />
+    <Compile Include="Models\Mapping\tbLogAcessoUsuarioMap.cs" />
+    <Compile Include="Models\Mapping\tbLoginAdquirenteEmpresaMap.cs" />
+    <Compile Include="Models\Mapping\tbMaquinaProcessamentoMap.cs" />
+    <Compile Include="Models\Mapping\tbModoEntradaTefMap.cs" />
+    <Compile Include="Models\Mapping\tbNotaDaGenteMap.cs" />
+    <Compile Include="Models\Mapping\tbProdutoTefMap.cs" />
+    <Compile Include="Models\Mapping\tbRecebimentoTEFMap.cs" />
+    <Compile Include="Models\Mapping\tbRedeTefMap.cs" />
+    <Compile Include="Models\Mapping\tbSituacaoRedeTefMap.cs" />
+    <Compile Include="Models\Mapping\tbTipoProdutoTefMap.cs" />
+    <Compile Include="Models\Mapping\tbTransacaoTefMap.cs" />
+    <Compile Include="Models\Mapping\TerminalLogicoMap.cs" />
+    <Compile Include="Models\Mapping\TicketCarMap.cs" />
+    <Compile Include="Models\Mapping\TipoPagamentoMap.cs" />
+    <Compile Include="Models\Mapping\tipoprodutoMap.cs" />
+    <Compile Include="Models\Mapping\tipo_transacaoMap.cs" />
+    <Compile Include="Models\Mapping\tot_trnMap.cs" />
+    <Compile Include="Models\Mapping\transacoMap.cs" />
+    <Compile Include="Models\Mapping\ufMap.cs" />
+    <Compile Include="Models\Mapping\usuarioMap.cs" />
+    <Compile Include="Models\Mapping\ValeCardMap.cs" />
+    <Compile Include="Models\Mapping\webpages_ControllersMap.cs" />
+    <Compile Include="Models\Mapping\webpages_MembershipMap.cs" />
+    <Compile Include="Models\Mapping\webpages_MethodsMap.cs" />
+    <Compile Include="Models\Mapping\webpages_OAuthMembershipMap.cs" />
+    <Compile Include="Models\Mapping\webpages_PermissionsMap.cs" />
+    <Compile Include="Models\Mapping\webpages_RoleLevelsMap.cs" />
+    <Compile Include="Models\Mapping\webpages_RolesMap.cs" />
+    <Compile Include="Models\Mapping\webpages_UsersInRolesMap.cs" />
+    <Compile Include="Models\Mapping\webpages_UsersMap.cs" />
+    <Compile Include="Models\merca.cs" />
+    <Compile Include="Models\MercaFornecedor.cs" />
+    <Compile Include="Models\merca_dePara.cs" />
+    <Compile Include="Models\modoentrada.cs" />
+    <Compile Include="Models\MSpeer_lsns.cs" />
+    <Compile Include="Models\MSpeer_request.cs" />
+    <Compile Include="Models\MSpeer_response.cs" />
+    <Compile Include="Models\MSpub_identity_range.cs" />
+    <Compile Include="Models\newsletter.cs" />
+    <Compile Include="Models\nfe_entrada.cs" />
+    <Compile Include="Models\nfe_saida.cs" />
+    <Compile Include="Models\nfe_saida1.cs" />
+    <Compile Include="Models\nfe_saida_new.cs" />
+    <Compile Include="Models\nivel_usuarios.cs" />
+    <Compile Include="Models\NotaDaGente.cs" />
+    <Compile Include="Models\notificacao_iservices.cs" />
+    <Compile Include="Models\Nutricash.cs" />
+    <Compile Include="Models\Omni.cs" />
+    <Compile Include="Models\Operadora.cs" />
+    <Compile Include="Models\PainelNotaDaGente.cs" />
+    <Compile Include="Models\painel_taxservices_dbContext.cs" />
+    <Compile Include="Models\parametro_recepcao.cs" />
+    <Compile Include="Models\PDV.cs" />
+    <Compile Include="Models\pedido.cs" />
+    <Compile Include="Models\pessoa.cs" />
+    <Compile Include="Models\PoliCard.cs" />
+    <Compile Include="Models\produto.cs" />
+    <Compile Include="Models\produtosporrede.cs" />
+    <Compile Include="Models\qrtz_blob_triggers.cs" />
+    <Compile Include="Models\qrtz_calendars.cs" />
+    <Compile Include="Models\qrtz_cron_triggers.cs" />
+    <Compile Include="Models\qrtz_fired_triggers.cs" />
+    <Compile Include="Models\qrtz_job_details.cs" />
+    <Compile Include="Models\qrtz_job_listeners.cs" />
+    <Compile Include="Models\qrtz_locks.cs" />
+    <Compile Include="Models\qrtz_paused_trigger_grps.cs" />
+    <Compile Include="Models\qrtz_scheduler_state.cs" />
+    <Compile Include="Models\qrtz_simple_triggers.cs" />
+    <Compile Include="Models\qrtz_triggers.cs" />
+    <Compile Include="Models\qrtz_trigger_listeners.cs" />
+    <Compile Include="Models\Recebimento.cs" />
+    <Compile Include="Models\RecebimentoParcela.cs" />
+    <Compile Include="Models\Recebimento_Original.cs" />
+    <Compile Include="Models\Recebimento_Temp.cs" />
+    <Compile Include="Models\recepcao_email.cs" />
+    <Compile Include="Models\rede.cs" />
+    <Compile Include="Models\RedeCard.cs" />
+    <Compile Include="Models\RedeMed.cs" />
+    <Compile Include="Models\regional.cs" />
+    <Compile Include="Models\SenhaNotaDaGente.cs" />
+    <Compile Include="Models\sitefweb_projects.cs" />
+    <Compile Include="Models\sitrede.cs" />
+    <Compile Include="Models\Sodexo.cs" />
+    <Compile Include="Models\statistic.cs" />
+    <Compile Include="Models\SuporteLoja.cs" />
+    <Compile Include="Models\sysarticle.cs" />
+    <Compile Include="Models\sysarticlecolumn.cs" />
+    <Compile Include="Models\sysarticleupdate.cs" />
+    <Compile Include="Models\sysdiagram.cs" />
+    <Compile Include="Models\syspublication.cs" />
+    <Compile Include="Models\sysreplserver.cs" />
+    <Compile Include="Models\sysschemaarticle.cs" />
+    <Compile Include="Models\syssubscription.cs" />
+    <Compile Include="Models\system_config_entries.cs" />
+    <Compile Include="Models\system_config_section.cs" />
+    <Compile Include="Models\systranschema.cs" />
+    <Compile Include="Models\tabaudit.cs" />
+    <Compile Include="Models\TabExp.cs" />
+    <Compile Include="Models\TabMeiosPag.cs" />
+    <Compile Include="Models\tab_bandeiras.cs" />
+    <Compile Include="Models\tab_cb.cs" />
+    <Compile Include="Models\tab_codtrnweb_cb.cs" />
+    <Compile Include="Models\tab_formapagto_cb.cs" />
+    <Compile Include="Models\tab_tipodoc_cb.cs" />
+    <Compile Include="Models\TaxaAdministracao.cs" />
+    <Compile Include="Models\tbAdquirente.cs" />
+    <Compile Include="Models\tbBancoParametro.cs" />
+    <Compile Include="Models\tbBandeiraTef.cs" />
+    <Compile Include="Models\tbContaCorrente.cs" />
+    <Compile Include="Models\tbContaCorrente_tbLoginAdquirenteEmpresa.cs" />
+    <Compile Include="Models\tbEstadoTransacaoTef.cs" />
+    <Compile Include="Models\tbEstadoTransacaoTef1.cs" />
+    <Compile Include="Models\tbExecucaoLog.cs" />
+    <Compile Include="Models\tbExtrato.cs" />
+    <Compile Include="Models\tbIPTef.cs" />
+    <Compile Include="Models\tbLogAcessoUsuario.cs" />
+    <Compile Include="Models\tbLoginAdquirenteEmpresa.cs" />
+    <Compile Include="Models\tbMaquinaProcessamento.cs" />
+    <Compile Include="Models\tbModoEntradaTef.cs" />
+    <Compile Include="Models\tbNotaDaGente.cs" />
+    <Compile Include="Models\tbProdutoTef.cs" />
+    <Compile Include="Models\tbRecebimentoTEF.cs" />
+    <Compile Include="Models\tbRedeTef.cs" />
+    <Compile Include="Models\tbSituacaoRedeTef.cs" />
+    <Compile Include="Models\tbTipoProdutoTef.cs" />
+    <Compile Include="Models\tbTransacaoTef.cs" />
+    <Compile Include="Models\TerminalLogico.cs" />
+    <Compile Include="Models\TicketCar.cs" />
+    <Compile Include="Models\TipoPagamento.cs" />
+    <Compile Include="Models\tipoproduto.cs" />
+    <Compile Include="Models\tipo_transacao.cs" />
+    <Compile Include="Models\tot_trn.cs" />
+    <Compile Include="Models\transaco.cs" />
+    <Compile Include="Models\uf.cs" />
+    <Compile Include="Models\usuario.cs" />
+    <Compile Include="Models\ValeCard.cs" />
+    <Compile Include="Models\webpages_Controllers.cs" />
+    <Compile Include="Models\webpages_Membership.cs" />
+    <Compile Include="Models\webpages_Methods.cs" />
+    <Compile Include="Models\webpages_OAuthMembership.cs" />
+    <Compile Include="Models\webpages_Permissions.cs" />
+    <Compile Include="Models\webpages_RoleLevels.cs" />
+    <Compile Include="Models\webpages_Roles.cs" />
+    <Compile Include="Models\webpages_Users.cs" />
+    <Compile Include="Models\webpages_UsersInRoles.cs" />
+    <Compile Include="Negocios\GatewayLogExecution.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\bullet.png" />
+    <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\orderedList0.png" />
+    <Content Include="Images\orderedList1.png" />
+    <Content Include="Images\orderedList2.png" />
+    <Content Include="Images\orderedList3.png" />
+    <Content Include="Images\orderedList4.png" />
+    <Content Include="Images\orderedList5.png" />
+    <Content Include="Images\orderedList6.png" />
+    <Content Include="Images\orderedList7.png" />
+    <Content Include="Images\orderedList8.png" />
+    <Content Include="Images\orderedList9.png" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Home\Server.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50780</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:50780/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

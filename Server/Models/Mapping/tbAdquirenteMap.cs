@@ -1,0 +1,34 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+namespace Server.Models.Mapping
+{
+    public class tbAdquirenteMap : EntityTypeConfiguration<tbAdquirente>
+    {
+        public tbAdquirenteMap()
+        {
+            // Primary Key
+            this.HasKey(t => t.cdAdquirente);
+
+            // Properties
+            this.Property(t => t.cdAdquirente)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
+            this.Property(t => t.nmAdquirente)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            this.Property(t => t.dsAdquirente)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            // Table & Column Mappings
+            this.ToTable("tbAdquirente", "card");
+            this.Property(t => t.cdAdquirente).HasColumnName("cdAdquirente");
+            this.Property(t => t.nmAdquirente).HasColumnName("nmAdquirente");
+            this.Property(t => t.dsAdquirente).HasColumnName("dsAdquirente");
+            this.Property(t => t.stAdquirente).HasColumnName("stAdquirente");
+            this.Property(t => t.hrExecucao).HasColumnName("hrExecucao");
+        }
+    }
+}
