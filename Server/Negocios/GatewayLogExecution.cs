@@ -12,24 +12,10 @@ using System.Web;
 
 namespace Server.Negocios
 {
-    
-    public class GatewayLogExecution
-    {
-
-    }
-
-    /*public class LogExecution
-    {
-        public string ds_nome { get; set; }
-        public string ds_fantasia { get; set; }
-        public string nmOperadora { get; set; }
-        public DateTime dtaFiltroTransacoesFinal { get; set; }
-        public string statusExecution { get; set; }
-    }*/
 
     public class LogExecutionRepository
     {
-        public List<Models.LogExecution> list = null;
+        private List<Models.LogExecution> list = null;
         public static painel_taxservices_dbContext _db = new painel_taxservices_dbContext();
 
         public void GetData(SqlNotificationInfo Info = SqlNotificationInfo.Unknown)
@@ -113,7 +99,7 @@ namespace Server.Negocios
                 SqlNotificationInfo Info = e.Info;
                 SqlNotificationSource Statement = e.Source;
                 SqlNotificationType Subscribe = e.Type;
-                ServerHub.Show();
+                //ServerHub.Show();
 
                 //ISynchronizeInvoke i = (ISynchronizeInvoke)this;
                 //if (i.InvokeRequired)

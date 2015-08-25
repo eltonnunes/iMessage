@@ -1,30 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
+using api.Negocios.SignalR;
 
 namespace Server.Hubs
 {
     [HubName("ServerAtosCapital")]
     public class ServerHub : Hub
     {
-        public void Hello()
-        {
-            Clients.All.hello();
-        }
+        private GatewayMonitorCargas monitorCargas;
 
-        public void Send(String nome, String message)
+        public void Conectado(string data)
         {
-            // Call the addNewMessageToPage method to update clients.
-            Clients.All.addNewMessageToPage(nome, message);
-        }
+            if (monitorCargas == null) monitorCargas = new GatewayMonitorCargas(data);
+            else monitorCargas.setData(data);
 
-        public static void Show()
-        {
-            IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
-            context.Clients.All.displayStatus();
+            monitorCargas.enviaLista(Context.ConnectionId);
         }
     }
 }
