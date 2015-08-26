@@ -32,13 +32,13 @@ namespace Server
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            if (this.Context.Request.Path.Contains("signalr/negotiate") || this.Context.Request.Path.Contains("signalr/start"))
+            /*if (this.Context.Request.Path.Contains("signalr/negotiate") || this.Context.Request.Path.Contains("signalr/start"))
             {
-                this.Context.Response.AddHeader("Access-Control-Allow-Origin", "http://127.0.0.1:58731/"); //"*");
-                this.Context.Response.AddHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
-                this.Context.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS ");
+                //this.Context.Response.AddHeader("Access-Control-Allow-Origin", "http://127.0.0.1:58731/"); //"*");
+                //this.Context.Response.AddHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
+                this.Context.Response.AddHeader("Access-Control-Allow-Methods", "GET ");
                 this.Context.Response.AddHeader("Access-Control-Allow-Credentials", "true");
-            }
+            }*/
         }
 
         protected void Application_End()

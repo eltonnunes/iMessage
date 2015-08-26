@@ -534,6 +534,7 @@
     <Compile Include="Models\NotaDaGente.cs" />
     <Compile Include="Models\notificacao_iservices.cs" />
     <Compile Include="Models\Nutricash.cs" />
+    <Compile Include="Models\Object\FiltroMonitorCargas.cs" />
     <Compile Include="Models\Omni.cs" />
     <Compile Include="Models\Operadora.cs" />
     <Compile Include="Models\PainelNotaDaGente.cs" />

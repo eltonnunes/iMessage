@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using api.Negocios.SignalR;
+using Server.Models.Object;
 
 namespace Server.Hubs
 {
@@ -9,10 +10,10 @@ namespace Server.Hubs
     {
         private GatewayMonitorCargas monitorCargas;
 
-        public void Conectado(string data)
+        public void obtemLista(FiltroMonitorCargas filtro)
         {
-            if (monitorCargas == null) monitorCargas = new GatewayMonitorCargas(data);
-            else monitorCargas.setData(data);
+            if (monitorCargas == null) monitorCargas = new GatewayMonitorCargas(filtro);
+            else monitorCargas.setFiltro(filtro);
 
             monitorCargas.enviaLista(Context.ConnectionId);
         }

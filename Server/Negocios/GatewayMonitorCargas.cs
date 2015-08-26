@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Server.Hubs;
 using Server.Models;
+using Server.Models.Object;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,17 +18,17 @@ namespace api.Negocios.SignalR
         private List<dynamic> list;
         private IHubContext context = GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
         private painel_taxservices_dbContext _db = new painel_taxservices_dbContext();
-        private string data;
+        private FiltroMonitorCargas filtro;
 
-        public GatewayMonitorCargas(string data)
+        public GatewayMonitorCargas(FiltroMonitorCargas filtro)
         {
-            setData(data);
+            setFiltro(filtro);
             semaforo = new Semaphore(1, 1);
         }
 
-        public void setData(string data)
+        public void setFiltro(FiltroMonitorCargas filtro)
         {
-            this.data = data;
+            this.filtro = filtro;
         }
 
         public void initList()
@@ -38,8 +39,8 @@ namespace api.Negocios.SignalR
             connection.Open();
 
             // YYYYMM
-            int ano = data.Length >= 4 ? Convert.ToInt32(data.Substring(0, 4)) : DateTime.Now.Year;
-            int mes = data.Length >= 6 ? Convert.ToInt32(data.Substring(4, 2)) : DateTime.Now.Month;
+            int ano = filtro.Data.Length >= 4 ? Convert.ToInt32(filtro.Data.Substring(0, 4)) : DateTime.Now.Year;
+            int mes = filtro.Data.Length >= 6 ? Convert.ToInt32(filtro.Data.Substring(4, 2)) : DateTime.Now.Month;
 
             string script = @"
                         SELECT
@@ -48,9 +49,13 @@ namespace api.Negocios.SignalR
                         pos.LogExecution.statusExecution,
                         pos.LogExecution.idLoginOperadora,
                         pos.LogExecution.dtaExecucaoFim,
+                        pos.LogExecution.dtaExecucaoProxima,
                         pos.LoginOperadora.status,
+                        cliente.grupo_empresa.id_grupo,
+                        cliente.grupo_empresa.ds_nome,
                         cliente.empresa.nu_cnpj,
                         cliente.empresa.ds_fantasia,
+                        cliente.empresa.filial,
                         pos.Operadora.id AS idOperadora,
                         pos.Operadora.nmOperadora
 
@@ -58,10 +63,20 @@ namespace api.Negocios.SignalR
                         pos.LogExecution
                         INNER JOIN pos.LoginOperadora ON pos.LogExecution.idLoginOperadora = pos.LoginOperadora.id
                         INNER JOIN cliente.empresa ON pos.LoginOperadora.cnpj = cliente.empresa.nu_cnpj
-                        INNER JOIN pos.Operadora ON pos.LoginOperadora.idOperadora = pos.Operadora.id                        
+                        INNER JOIN pos.Operadora ON pos.LoginOperadora.idOperadora = pos.Operadora.id
+                        INNER JOIN cliente.grupo_empresa ON pos.LoginOperadora.idGrupo = cliente.grupo_empresa.id_grupo                        
 
                         WHERE YEAR(pos.LogExecution.dtaFiltroTransacoes) = " + ano + 
                         @" AND MONTH(pos.LogExecution.dtaFiltroTransacoes) = " + mes;
+
+            if (filtro.IdGrupo > 0)
+                script += @" AND cliente.grupo_empresa.id_grupo = " + filtro.IdGrupo;
+
+            if(!filtro.NuCnpj.Equals(""))
+                script += @" AND cliente.empresa.nu_cnpj = '" + filtro.NuCnpj + @"'";
+
+            if(filtro.CdAdquirente > 0)
+                script += @" AND pos.Operadora.id = " + filtro.CdAdquirente;
 
             using (SqlCommand command = new SqlCommand(script, connection))
             {
@@ -82,7 +97,7 @@ namespace api.Negocios.SignalR
 
                     //if (list != null) list.Clear();
 
-                    semaforo.WaitOne();
+                    //semaforo.WaitOne();
 
                     list = reader.Cast<IDataRecord>()
                                     .Select(e => new
@@ -91,6 +106,7 @@ namespace api.Negocios.SignalR
                                         dtaFiltroTransacoes = e["dtaFiltroTransacoes"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaFiltroTransacoes"],
                                         statusExecution = Convert.ToString(e["statusExecution"]),
                                         dtaExecucaoFim = e["dtaExecucaoFim"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoFim"],
+                                        dtaExecucaoProxima = e["dtaExecucaoProxima"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoProxima"],
                                         loginOperadora = new
                                         {
                                             id = Convert.ToInt32(e["idLoginOperadora"]),
@@ -99,7 +115,8 @@ namespace api.Negocios.SignalR
                                         empresa = new
                                         {
                                             nu_cnpj = Convert.ToString(e["nu_cnpj"]),
-                                            ds_fantasia = Convert.ToString(e["ds_fantasia"])
+                                            ds_fantasia = Convert.ToString(e["ds_fantasia"]),
+                                            filial = Convert.ToString(e["filial"]),
                                         },
                                         operadora = new
                                         {
@@ -108,7 +125,7 @@ namespace api.Negocios.SignalR
                                         }
                                     }).ToList<dynamic>();
 
-                    semaforo.Release(1);
+                    //semaforo.Release(1);
                 }
 
 
@@ -117,11 +134,11 @@ namespace api.Negocios.SignalR
 
 
 
-        private List<dynamic> getListaAgrupadaEOrdenada(List<dynamic> lista)
+        private List<dynamic> getListaAgrupadaEOrdenada(List<dynamic> lista, SqlNotificationInfo Info = SqlNotificationInfo.Unknown)
         {
             if (lista == null) return null;
 
-            semaforo.WaitOne();
+           //semaforo.WaitOne();
 
             // Agrupa
             List<dynamic> newList = lista
@@ -130,13 +147,14 @@ namespace api.Negocios.SignalR
                         {
                             id = e.Key.id,
                             status = e.Key.status,
-                            obj = e.Select(x => new
+                            logExecution = e.Select(x => new
                             {
                                 id = x.id,
                                 dtaFiltroTransacoes = x.dtaFiltroTransacoes,
                                 statusExecution = x.statusExecution,
-                                dtaExecucaoFim = x.dtaExecucaoFim
-                            }),
+                                dtaExecucaoFim = x.dtaExecucaoFim,
+                                dtaExecucaoProxima = x.dtaExecucaoProxima,
+                            }).OrderBy(x => x.dtaFiltroTransacoes).ToList<dynamic>(),
                             ultimaDataExecucaoFim = e.OrderByDescending(x => x.dtaExecucaoFim)
                                                      .Select(x => x.dtaExecucaoFim)
                                                      .FirstOrDefault(),
@@ -145,10 +163,23 @@ namespace api.Negocios.SignalR
                         })
                         .ToList<dynamic>();
 
-            semaforo.Release(1);
+            //semaforo.Release(1);
 
             // Ordena
-            return newList.OrderByDescending(e => e.ultimaDataExecucaoFim).ToList<dynamic>();
+            newList = newList.OrderByDescending(e => e.ultimaDataExecucaoFim)
+                             .ThenBy(e => e.empresa.ds_fantasia)
+                             .ThenBy(e => e.empresa.filial)
+                             .ThenBy(e => e.operadora.nmOperadora)
+                             .ToList<dynamic>();
+
+            if (Info.Equals(SqlNotificationInfo.Unknown)) return newList;
+
+            return new List<dynamic>()
+            {
+                new { NotificationInfo = Info.ToString(),
+                      objetos = newList
+                    }
+            };
         }
 
 
@@ -171,12 +202,12 @@ namespace api.Negocios.SignalR
                     // Delete
                     mudancas = getListaAgrupadaEOrdenada( oldList
                                                             .Where(e => !list.Any(l => l.id == e.id && l.statusExecution.Equals(e.statusExecution) && l.dtaExecucaoFim.Equals(e.dtaExecucaoFim)))
-                                                            .ToList<dynamic>());
+                                                            .ToList<dynamic>(), Info);
                 else
                     // Insert, Update
                     mudancas = getListaAgrupadaEOrdenada(list
                                                             .Where(e => !oldList.Any(l => l.id == e.id && l.statusExecution.Equals(e.statusExecution) && l.dtaExecucaoFim.Equals(e.dtaExecucaoFim)))
-                                                            .ToList<dynamic>());
+                                                            .ToList<dynamic>(), Info);
             }
 
             semaforo.Release(1);
@@ -186,8 +217,10 @@ namespace api.Negocios.SignalR
 
         public void enviaLista(string connectionId)
         {
+            semaforo.WaitOne();
             if (list == null) initList();
-            context.Clients.Client(connectionId).notifyCarga(getListaAgrupadaEOrdenada(list));
+            context.Clients.Client(connectionId).enviaLista(getListaAgrupadaEOrdenada(list));
+            semaforo.Release();
         }
 
         private void dependency_OnChange(object sender, SqlNotificationEventArgs e)
@@ -195,7 +228,7 @@ namespace api.Negocios.SignalR
             if (e.Info.Equals(SqlNotificationInfo.Insert) || 
                 e.Info.Equals(SqlNotificationInfo.Update) ||
                 e.Info.Equals(SqlNotificationInfo.Delete))
-                context.Clients.All.notifyCarga(obtemListaComMudancas(e.Info));
+                context.Clients.All.enviaMudancas(obtemListaComMudancas(e.Info)[0]);
         }
     }
 }
