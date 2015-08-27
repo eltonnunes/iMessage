@@ -112,6 +112,11 @@ namespace api.Negocios.SignalR
                                             id = Convert.ToInt32(e["idLoginOperadora"]),
                                             status = Convert.ToBoolean(e["status"]),
                                         },
+                                        grupoempresa = new
+                                        {
+                                            id_grupo = Convert.ToInt32(e["id_grupo"]),
+                                            ds_nome = Convert.ToString(e["ds_nome"]),
+                                        },
                                         empresa = new
                                         {
                                             nu_cnpj = Convert.ToString(e["nu_cnpj"]),
@@ -138,6 +143,8 @@ namespace api.Negocios.SignalR
         {
             if (lista == null) return null;
 
+            if (lista.Count == 0) return lista;
+
            //semaforo.WaitOne();
 
             // Agrupa
@@ -158,6 +165,7 @@ namespace api.Negocios.SignalR
                             ultimaDataExecucaoFim = e.OrderByDescending(x => x.dtaExecucaoFim)
                                                      .Select(x => x.dtaExecucaoFim)
                                                      .FirstOrDefault(),
+                            grupoempresa = e.Select(x => x.grupoempresa).FirstOrDefault(),
                             empresa = e.Select(x => x.empresa).FirstOrDefault(),
                             operadora = e.Select(x => x.operadora).FirstOrDefault(),
                         })
@@ -197,17 +205,18 @@ namespace api.Negocios.SignalR
 
             if (list != null)
             {
-
-                if (Info.Equals(SqlNotificationInfo.Delete))
-                    // Delete
-                    mudancas = getListaAgrupadaEOrdenada( oldList
-                                                            .Where(e => !list.Any(l => l.id == e.id && l.statusExecution.Equals(e.statusExecution) && l.dtaExecucaoFim.Equals(e.dtaExecucaoFim)))
-                                                            .ToList<dynamic>(), Info);
-                else
-                    // Insert, Update
-                    mudancas = getListaAgrupadaEOrdenada(list
-                                                            .Where(e => !oldList.Any(l => l.id == e.id && l.statusExecution.Equals(e.statusExecution) && l.dtaExecucaoFim.Equals(e.dtaExecucaoFim)))
-                                                            .ToList<dynamic>(), Info);
+                try {
+                    if (Info.Equals(SqlNotificationInfo.Delete))
+                        // Delete
+                        mudancas = getListaAgrupadaEOrdenada(oldList
+                                                                .Where(e => !list.Any(l => l.id == e.id && l.statusExecution.Equals(e.statusExecution) && l.dtaExecucaoFim.Equals(e.dtaExecucaoFim)))
+                                                                .ToList<dynamic>(), Info);
+                    else
+                        // Insert, Update
+                        mudancas = getListaAgrupadaEOrdenada(list
+                                                                .Where(e => !oldList.Any(l => l.id == e.id && l.statusExecution.Equals(e.statusExecution) && l.dtaExecucaoFim.Equals(e.dtaExecucaoFim)))
+                                                                .ToList<dynamic>(), Info);
+                }catch { }
             }
 
             semaforo.Release(1);
@@ -225,10 +234,15 @@ namespace api.Negocios.SignalR
 
         private void dependency_OnChange(object sender, SqlNotificationEventArgs e)
         {
-            if (e.Info.Equals(SqlNotificationInfo.Insert) || 
+            if (e.Info.Equals(SqlNotificationInfo.Insert) ||
                 e.Info.Equals(SqlNotificationInfo.Update) ||
                 e.Info.Equals(SqlNotificationInfo.Delete))
-                context.Clients.All.enviaMudancas(obtemListaComMudancas(e.Info)[0]);
+            {
+                // Só envia se de fato tiveram mudanças para o filtro selecionado
+                List<dynamic> mudancas = obtemListaComMudancas(e.Info);
+                if(mudancas.Count > 0)
+                    context.Clients.All.enviaMudancas(mudancas[0]);
+            }
         }
     }
 }
