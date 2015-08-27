@@ -15,8 +15,8 @@ namespace Server.Models.Object
             set { data = value; }
         }
 
-        private int status; // 0 : TODOS | 1 : NÃO CARREGADO | 2 : CARREGADO COM SUCESSO | 3 : CARREGADO COM ERRO | 4 : ERRO DE SENHA
-        public int Status
+        private string status; // '0' : EM EXECUÇÃO | '1' : CARREGADO COM SUCESSO | '2' : CARREGADO COM ERRO | '3' : RE-EXECUÇÃO | '4' : ERRO DE SENHA | '7' : ELEGÍVEL | '-1' : NÃO CARREGADO
+        public string Status
         {
             get { return status; }
             set { status = value; }
