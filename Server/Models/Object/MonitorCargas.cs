@@ -216,6 +216,13 @@ namespace Server.Models.Object
             set { logExec = value; }
         }
 
+        private int prioridadeStatus;
+        public int prioridade
+        {
+            get { return prioridadeStatus; }
+            set { prioridadeStatus = value; }
+        }
+
         private Nullable<DateTime> ultimaDataExec;
         public Nullable<DateTime> ultimaDataExecucaoFim
         {

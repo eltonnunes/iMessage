@@ -21,6 +21,8 @@ namespace api.Negocios.SignalR
         //private painel_taxservices_dbContext _db;
         private FiltroMonitorCargas filtro;
         private SqlConnection connection;
+        private SqlCommand command;
+        private string script;
         // flag
         private bool alterouFiltro;
 
@@ -32,6 +34,35 @@ namespace api.Negocios.SignalR
             context = GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
             //_db = new painel_taxservices_dbContext();
             connection = new SqlConnection(ConfigurationManager.ConnectionStrings["painel_taxservices_dbContext"].ConnectionString);
+
+            script = @"
+                        SELECT
+                        pos.LogExecution.id,
+                        pos.LogExecution.dtaFiltroTransacoes,
+                        pos.LogExecution.statusExecution,
+                        pos.LogExecution.idLoginOperadora,
+                        pos.LogExecution.dtaExecucaoFim,
+                        pos.LogExecution.dtaExecucaoProxima,
+                        pos.LoginOperadora.status,
+                        cliente.grupo_empresa.id_grupo,
+                        cliente.grupo_empresa.ds_nome,
+                        cliente.empresa.nu_cnpj,
+                        cliente.empresa.ds_fantasia,
+                        cliente.empresa.filial,
+                        pos.Operadora.id AS idOperadora,
+                        pos.Operadora.nmOperadora
+
+                        FROM
+                        pos.LogExecution
+                        INNER JOIN pos.LoginOperadora ON pos.LogExecution.idLoginOperadora = pos.LoginOperadora.id
+                        INNER JOIN cliente.empresa ON pos.LoginOperadora.cnpj = cliente.empresa.nu_cnpj
+                        INNER JOIN pos.Operadora ON pos.LoginOperadora.idOperadora = pos.Operadora.id
+                        INNER JOIN cliente.grupo_empresa ON pos.LoginOperadora.idGrupo = cliente.grupo_empresa.id_grupo                        
+
+                        WHERE YEAR(pos.LogExecution.dtaFiltroTransacoes) = " + DateTime.Now.Year +
+                        @" AND MONTH(pos.LogExecution.dtaFiltroTransacoes) = " + DateTime.Now.Month;
+
+            command = new SqlCommand(script, connection);
         }
 
         public void setFiltro(FiltroMonitorCargas filtro)
@@ -52,7 +83,7 @@ namespace api.Negocios.SignalR
             int ano = filtro.Data.Length >= 4 ? Convert.ToInt32(filtro.Data.Substring(0, 4)) : DateTime.Now.Year;
             int mes = filtro.Data.Length >= 6 ? Convert.ToInt32(filtro.Data.Substring(4, 2)) : DateTime.Now.Month;
 
-            string script = @"
+            script = @"
                         SELECT
                         pos.LogExecution.id,
                         pos.LogExecution.dtaFiltroTransacoes,
@@ -92,66 +123,59 @@ namespace api.Negocios.SignalR
 
             semaforoExecucao.WaitOne();
 
-            using (SqlCommand command = new SqlCommand(script, connection))
+            // Obtém novo comando
+            command = new SqlCommand(script, connection);
+
+            // Registra evento de notificação
+            registraEventoNotificacao();
+
+
+            //if (connection.State == ConnectionState.Closed) connection.Open();
+
+            using (var reader = command.ExecuteReader())
             {
-                // Make sure the command object does not already have
-                // a notification object associated with it.
-                command.Notification = null;
 
+                //if (list != null) list.Clear();
 
-                SqlDependency dependency = new SqlDependency(command);
-                dependency.OnChange += new OnChangeEventHandler(dependency_OnChange);
+                //semaforo.WaitOne();
 
-
-                if (connection.State == ConnectionState.Closed)
-                    connection.Open();
-
-                using (var reader = command.ExecuteReader())
-                {
-
-                    //if (list != null) list.Clear();
-
-                    //semaforo.WaitOne();
-
-                    list = reader.Cast<IDataRecord>()
-                                    .Select(e => new MonitorCargas
+                list = reader.Cast<IDataRecord>()
+                                .Select(e => new MonitorCargas
+                                {
+                                    id = Convert.ToInt32(e["id"]),
+                                    dtaFiltroTransacoes = (DateTime)e["dtaFiltroTransacoes"],
+                                    statusExecution = Convert.ToString(e["statusExecution"]),
+                                    dtaExecucaoFim = e["dtaExecucaoFim"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoFim"],
+                                    dtaExecucaoProxima = e["dtaExecucaoProxima"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoProxima"],
+                                    loginOperadora = new LoginOperadoraMonitor
                                     {
-                                        id = Convert.ToInt32(e["id"]),
-                                        dtaFiltroTransacoes = (DateTime)e["dtaFiltroTransacoes"],
-                                        statusExecution = Convert.ToString(e["statusExecution"]),
-                                        dtaExecucaoFim = e["dtaExecucaoFim"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoFim"],
-                                        dtaExecucaoProxima = e["dtaExecucaoProxima"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoProxima"],
-                                        loginOperadora = new LoginOperadoraMonitor
-                                        {
-                                            id = Convert.ToInt32(e["idLoginOperadora"]),
-                                            status = Convert.ToBoolean(e["status"]),
-                                        },
-                                        grupoempresa = new GrupoEmpresaMonitor
-                                        {
-                                            id_grupo = Convert.ToInt32(e["id_grupo"]),
-                                            ds_nome = Convert.ToString(e["ds_nome"]),
-                                        },
-                                        empresa = new EmpresaMonitor
-                                        {
-                                            nu_cnpj = Convert.ToString(e["nu_cnpj"]),
-                                            ds_fantasia = Convert.ToString(e["ds_fantasia"]),
-                                            filial = Convert.ToString(e["filial"]),
-                                        },
-                                        operadora = new OperadoraMonitor
-                                        {
-                                            id = Convert.ToInt32(e["idOperadora"]),
-                                            nmOperadora = Convert.ToString(e["nmOperadora"])
-                                        }
-                                    }).ToList<MonitorCargas>();
+                                        id = Convert.ToInt32(e["idLoginOperadora"]),
+                                        status = Convert.ToBoolean(e["status"]),
+                                    },
+                                    grupoempresa = new GrupoEmpresaMonitor
+                                    {
+                                        id_grupo = Convert.ToInt32(e["id_grupo"]),
+                                        ds_nome = Convert.ToString(e["ds_nome"]),
+                                    },
+                                    empresa = new EmpresaMonitor
+                                    {
+                                        nu_cnpj = Convert.ToString(e["nu_cnpj"]),
+                                        ds_fantasia = Convert.ToString(e["ds_fantasia"]),
+                                        filial = Convert.ToString(e["filial"]),
+                                    },
+                                    operadora = new OperadoraMonitor
+                                    {
+                                        id = Convert.ToInt32(e["idOperadora"]),
+                                        nmOperadora = Convert.ToString(e["nmOperadora"])
+                                    }
+                                }).ToList<MonitorCargas>();
 
-                    alterouFiltro = false;
+                alterouFiltro = false;
 
-                    //semaforo.Release(1);
-                }
-
+                //semaforo.Release(1);
             }
 
-            semaforoExecucao.Release();
+            semaforoExecucao.Release(1);
         }
 
 
@@ -182,6 +206,7 @@ namespace api.Negocios.SignalR
                             ultimaDataExecucaoFim = e.OrderByDescending(x => x.dtaExecucaoFim)
                                                      .Select(x => x.dtaExecucaoFim)
                                                      .FirstOrDefault(),
+                            prioridade = e.Where(x => x.statusExecution.Equals("0")).Count() > 0 ? 1 : 0,
                             grupoempresa = e.Select(x => x.grupoempresa).FirstOrDefault(),
                             empresa = e.Select(x => x.empresa).FirstOrDefault(),
                             operadora = e.Select(x => x.operadora).FirstOrDefault(),
@@ -197,7 +222,8 @@ namespace api.Negocios.SignalR
                 {
                     // Não carregado!
                     newList = newList.Where(e => e.logExecution.Count() == 0)
-                                     .OrderByDescending(e => e.ultimaDataExecucaoFim)
+                                     .OrderByDescending(e => e.prioridade)
+                                     .ThenByDescending(e => e.ultimaDataExecucaoFim)
                                      .ThenBy(e => e.empresa.ds_fantasia)
                                      .ThenBy(e => e.empresa.filial)
                                      .ThenBy(e => e.operadora.nmOperadora)
@@ -206,7 +232,8 @@ namespace api.Negocios.SignalR
                 else
                 {
                     newList = newList.Where(e => e.logExecution.Any(l => l.statusExecution.Equals(filtro.Status)))
-                                     .OrderByDescending(e => e.ultimaDataExecucaoFim)
+                                     .OrderByDescending(e => e.prioridade)
+                                     .ThenByDescending(e => e.ultimaDataExecucaoFim)
                                      .ThenBy(e => e.empresa.ds_fantasia)
                                      .ThenBy(e => e.empresa.filial)
                                      .ThenBy(e => e.operadora.nmOperadora)
@@ -216,7 +243,8 @@ namespace api.Negocios.SignalR
             else
             {
                 // Sem filtro de status => apenas ordena
-                newList = newList.OrderByDescending(e => e.ultimaDataExecucaoFim)
+                newList = newList.OrderByDescending(e => e.prioridade)
+                                 .ThenByDescending(e => e.ultimaDataExecucaoFim)
                                  .ThenBy(e => e.empresa.ds_fantasia)
                                  .ThenBy(e => e.empresa.filial)
                                  .ThenBy(e => e.operadora.nmOperadora)
@@ -274,13 +302,19 @@ namespace api.Negocios.SignalR
         public void enviaLista(string connectionId)
         {
             semaforo.WaitOne();
-            if (list == null || alterouFiltro) initList();
+            /*if (list == null || alterouFiltro)*/ initList();
             context.Clients.Client(connectionId).enviaLista(list == null ? new List<dynamic>() : getListaAgrupadaEOrdenada(list));
             semaforo.Release();
         }
 
         private void dependency_OnChange(object sender, SqlNotificationEventArgs e)
         {
+            //Clean up the old notification
+            SqlDependency dep = (SqlDependency)sender;
+            dep.OnChange -= dependency_OnChange;
+
+            registraEventoNotificacao();
+
             if (e.Info.Equals(SqlNotificationInfo.Insert) ||
                 e.Info.Equals(SqlNotificationInfo.Update) ||
                 e.Info.Equals(SqlNotificationInfo.Delete))
@@ -290,6 +324,20 @@ namespace api.Negocios.SignalR
                 if(mudancas.Count > 0)
                     context.Clients.All.enviaMudancas(mudancas[0]);
             }
+        }
+
+
+        private void registraEventoNotificacao()
+        {
+            if (command == null) command = new SqlCommand(script, connection);
+
+            // Make sure the command object does not already have
+            // a notification object associated with it.
+            command.Notification = null;
+
+            SqlDependency dependency = new SqlDependency(command);
+            dependency.OnChange += new OnChangeEventHandler(dependency_OnChange);
+            
         }
     }
 }
