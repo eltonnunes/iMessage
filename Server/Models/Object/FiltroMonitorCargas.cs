@@ -8,6 +8,13 @@ namespace Server.Models.Object
 {
     public class FiltroMonitorCargas
     {
+        private string token;
+        public string Token
+        {
+            get { return token; }
+            set { token = value; }
+        }
+
         private string data;
         public string Data
         {

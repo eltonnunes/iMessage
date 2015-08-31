@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using Server.Bibliotecas;
 using Server.Hubs;
 using Server.Models;
 using Server.Models.Object;
@@ -73,6 +74,13 @@ namespace api.Negocios.SignalR
 
         public void initList()
         {
+            // Erro!
+            if (filtro.Token == null || !Permissoes.Autenticado(filtro.Token))
+            {
+                list = null;
+                return;
+            }
+
             if(connection == null)
                 connection = new SqlConnection(ConfigurationManager.ConnectionStrings["painel_taxservices_dbContext"].ConnectionString);
 
@@ -110,10 +118,28 @@ namespace api.Negocios.SignalR
                         WHERE YEAR(pos.LogExecution.dtaFiltroTransacoes) = " + ano + 
                         @" AND MONTH(pos.LogExecution.dtaFiltroTransacoes) = " + mes;
 
-            if (filtro.IdGrupo > 0)
+            // Usuário está amarrado a um grupo empresa?
+            Int32 IdGrupo = Permissoes.GetIdGrupo(filtro.Token);
+            if (IdGrupo != 0) script += @" AND cliente.grupo_empresa.id_grupo = " + IdGrupo;
+            else if (Permissoes.isAtosRoleVendedor(filtro.Token))
+            {
+                // Perfil Comercial tem uma carteira de clientes específica
+                List<Int32> listaIdsGruposEmpresas = Permissoes.GetIdsGruposEmpresasVendedor(filtro.Token);
+                if (listaIdsGruposEmpresas.Count > 0) {
+                    script += @" AND (cliente.grupo_empresa.id_grupo = " + listaIdsGruposEmpresas[0];
+                    for (int k = 1; k < listaIdsGruposEmpresas.Count; k++)
+                        script += @" OR cliente.grupo_empresa.id_grupo = " + listaIdsGruposEmpresas[k];
+                    script += @")";
+                }
+            }
+            else if (filtro.IdGrupo > 0)
                 script += @" AND cliente.grupo_empresa.id_grupo = " + filtro.IdGrupo;
 
-            if(!filtro.NuCnpj.Equals(""))
+            // Usuário está amarrado a uma filial?
+            string CnpjEmpresa = Permissoes.GetCNPJEmpresa(filtro.Token);
+            if (!CnpjEmpresa.Equals(""))
+                script += @" AND cliente.empresa.nu_cnpj = '" + CnpjEmpresa + @"'";
+            else if (!filtro.NuCnpj.Equals(""))
                 script += @" AND cliente.empresa.nu_cnpj = '" + filtro.NuCnpj + @"'";
 
             if(filtro.CdAdquirente > 0)
