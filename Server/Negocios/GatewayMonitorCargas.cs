@@ -24,12 +24,15 @@ namespace api.Negocios.SignalR
         private SqlConnection connection;
         private SqlCommand command;
         private string script;
+        private string connectionId;
         // flag
         private bool alterouFiltro;
 
-        public GatewayMonitorCargas(FiltroMonitorCargas filtro)
+
+
+        public GatewayMonitorCargas(string connectionId, FiltroMonitorCargas filtro)
         {
-            setFiltro(filtro);
+            setFiltro(connectionId, filtro);
             semaforo = new Semaphore(1, 1);
             semaforoExecucao = new Semaphore(1, 1);
             context = GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
@@ -66,9 +69,10 @@ namespace api.Negocios.SignalR
             command = new SqlCommand(script, connection);
         }
 
-        public void setFiltro(FiltroMonitorCargas filtro)
+        public void setFiltro(string connectionId, FiltroMonitorCargas filtro)
         {
             this.filtro = filtro;
+            this.connectionId = connectionId;
             alterouFiltro = true;
         }
 
@@ -83,9 +87,6 @@ namespace api.Negocios.SignalR
 
             if(connection == null)
                 connection = new SqlConnection(ConfigurationManager.ConnectionStrings["painel_taxservices_dbContext"].ConnectionString);
-
-            if(connection.State.Equals(ConnectionState.Closed) || connection.State.Equals(ConnectionState.Broken))
-                try { connection.Open(); }catch { return; }
 
             // YYYYMM
             int ano = filtro.Data.Length >= 4 ? Convert.ToInt32(filtro.Data.Substring(0, 4)) : DateTime.Now.Year;
@@ -156,7 +157,7 @@ namespace api.Negocios.SignalR
             registraEventoNotificacao();
 
 
-            //if (connection.State == ConnectionState.Closed) connection.Open();
+            if (!connection.State.Equals(ConnectionState.Open)) connection.Open();
 
             using (var reader = command.ExecuteReader())
             {
@@ -325,10 +326,10 @@ namespace api.Negocios.SignalR
             return mudancas;
         }
 
-        public void enviaLista(string connectionId)
+        public void enviaLista()
         {
             semaforo.WaitOne();
-            /*if (list == null || alterouFiltro)*/ initList();
+            initList();
             context.Clients.Client(connectionId).enviaLista(list == null ? new List<dynamic>() : getListaAgrupadaEOrdenada(list));
             semaforo.Release();
         }
@@ -347,8 +348,7 @@ namespace api.Negocios.SignalR
             {
                 // Só envia se de fato tiveram mudanças para o filtro selecionado
                 List<dynamic> mudancas = obtemListaComMudancas(e.Info);
-                if(mudancas.Count > 0)
-                    context.Clients.All.enviaMudancas(mudancas[0]);
+                if(mudancas.Count > 0) context.Clients.Client(connectionId).enviaMudancas(mudancas[0]);
             }
         }
 

@@ -637,7 +637,7 @@
     <Compile Include="Models\webpages_UsersInRoles.cs" />
     <Compile Include="Negocios\GatewayLogExecution.cs" />
     <Compile Include="Negocios\GatewayMonitorCargas.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="App_Data\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -772,9 +772,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Server.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>

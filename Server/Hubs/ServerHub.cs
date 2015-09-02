@@ -25,10 +25,10 @@ namespace Server.Hubs
 
             filtro.Token = Context.QueryString["token"];
 
-            if (monitorCargas == null) monitorCargas = new GatewayMonitorCargas(filtro);
-            else monitorCargas.setFiltro(filtro);
+            if (monitorCargas == null) monitorCargas = new GatewayMonitorCargas(Context.ConnectionId, filtro);
+            else monitorCargas.setFiltro(Context.ConnectionId, filtro);
 
-            monitorCargas.enviaLista(Context.ConnectionId);
+            monitorCargas.enviaLista();
         }
     }
 }
