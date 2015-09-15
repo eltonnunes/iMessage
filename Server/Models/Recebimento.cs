@@ -5,6 +5,11 @@ namespace Server.Models
 {
     public partial class Recebimento
     {
+        public Recebimento()
+        {
+            this.RecebimentoParcelas = new List<RecebimentoParcela>();
+        }
+
         public int id { get; set; }
         public int idBandeira { get; set; }
         public string cnpj { get; set; }
@@ -23,5 +28,6 @@ namespace Server.Models
         public virtual empresa empresa { get; set; }
         public virtual BandeiraPos BandeiraPos { get; set; }
         public virtual TerminalLogico TerminalLogico { get; set; }
+        public virtual ICollection<RecebimentoParcela> RecebimentoParcelas { get; set; }
     }
 }

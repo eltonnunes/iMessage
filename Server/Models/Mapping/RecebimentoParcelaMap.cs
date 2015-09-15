@@ -8,20 +8,17 @@ namespace Server.Models.Mapping
         public RecebimentoParcelaMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.idRecebimento, t.numParcela, t.valorParcelaBruta, t.dtaRecebimento, t.valorDescontado });
+            this.HasKey(t => new { t.idRecebimento, t.numParcela });
 
             // Properties
-            this.Property(t => t.idRecebimento)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
-            this.Property(t => t.numParcela)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
-            this.Property(t => t.valorParcelaBruta)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+            this.Property(t => t.dtaRecebimento)
+                .IsRequired();
 
             this.Property(t => t.valorDescontado)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .IsRequired();
+
+            this.Property(t => t.valorParcelaLiquida)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
 
             // Table & Column Mappings
             this.ToTable("RecebimentoParcela", "pos");
@@ -31,6 +28,15 @@ namespace Server.Models.Mapping
             this.Property(t => t.valorParcelaLiquida).HasColumnName("valorParcelaLiquida");
             this.Property(t => t.dtaRecebimento).HasColumnName("dtaRecebimento");
             this.Property(t => t.valorDescontado).HasColumnName("valorDescontado");
+            this.Property(t => t.idExtrato).HasColumnName("idExtrato");
+
+            // Relationships
+            this.HasOptional(t => t.tbExtrato)
+                .WithMany(t => t.RecebimentoParcelas)
+                .HasForeignKey(d => d.idExtrato);
+            this.HasRequired(t => t.Recebimento)
+                .WithMany(t => t.RecebimentoParcelas)
+                .HasForeignKey(d => d.idRecebimento);
         }
     }
 }
