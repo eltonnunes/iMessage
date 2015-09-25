@@ -20,6 +20,9 @@ namespace Server.Models.Mapping
             this.Property(t => t.valorParcelaLiquida)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
 
+            this.Property(t => t.vlDescontadoAntecipacao)
+                .IsRequired();
+
             // Table & Column Mappings
             this.ToTable("RecebimentoParcela", "pos");
             this.Property(t => t.idRecebimento).HasColumnName("idRecebimento");
@@ -29,6 +32,7 @@ namespace Server.Models.Mapping
             this.Property(t => t.dtaRecebimento).HasColumnName("dtaRecebimento");
             this.Property(t => t.valorDescontado).HasColumnName("valorDescontado");
             this.Property(t => t.idExtrato).HasColumnName("idExtrato");
+            this.Property(t => t.vlDescontadoAntecipacao).HasColumnName("vlDescontadoAntecipacao");
 
             // Relationships
             this.HasOptional(t => t.tbExtrato)
