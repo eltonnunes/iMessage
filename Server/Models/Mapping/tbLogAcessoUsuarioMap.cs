@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Server.Models.Mapping
@@ -12,6 +12,7 @@ namespace Server.Models.Mapping
 
             // Properties
             this.Property(t => t.dsUrl)
+                .IsRequired()
                 .HasMaxLength(255);
 
             this.Property(t => t.dsParametros)
@@ -20,17 +21,14 @@ namespace Server.Models.Mapping
             this.Property(t => t.dsFiltros)
                 .HasMaxLength(255);
 
+            this.Property(t => t.dsMethod)
+                .IsRequired()
+                .HasMaxLength(10);
+
             this.Property(t => t.dsAplicacao)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(1);
-
-            this.Property(t => t.dsUserAgent)
-                .HasMaxLength(255);
-
-            this.Property(t => t.dsMethod)
-                .IsRequired()
-                .HasMaxLength(10);
 
             // Table & Column Mappings
             this.ToTable("tbLogAcessoUsuario", "admin");
@@ -38,7 +36,7 @@ namespace Server.Models.Mapping
             this.Property(t => t.idUser).HasColumnName("idUser");
             this.Property(t => t.dsUrl).HasColumnName("dsUrl");
             this.Property(t => t.idController).HasColumnName("idController");
-            this.Property(t => t.idMethod).HasColumnName("idMethod");
+            
             this.Property(t => t.dsParametros).HasColumnName("dsParametros");
             this.Property(t => t.dsFiltros).HasColumnName("dsFiltros");
             this.Property(t => t.dtAcesso).HasColumnName("dtAcesso");
@@ -48,17 +46,14 @@ namespace Server.Models.Mapping
             this.Property(t => t.dsJson).HasColumnName("dsJson");
             this.Property(t => t.dsUserAgent).HasColumnName("dsUserAgent");
             this.Property(t => t.dsMethod).HasColumnName("dsMethod");
-
             // Relationships
-            this.HasOptional(t => t.webpages_Controllers)
-                .WithMany(t => t.tbLogAcessoUsuarios)
-                .HasForeignKey(d => d.idController);
-            this.HasOptional(t => t.webpages_Methods)
-                .WithMany(t => t.tbLogAcessoUsuarios)
-                .HasForeignKey(d => d.idMethod);
             this.HasRequired(t => t.webpages_Users)
                 .WithMany(t => t.tbLogAcessoUsuarios)
                 .HasForeignKey(d => d.idUser);
+            this.HasOptional(t => t.webpages_Controllers)
+                .WithMany(t => t.tbLogAcessoUsuarios)
+                .HasForeignKey(d => d.idController);
+
 
         }
     }

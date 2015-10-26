@@ -45,6 +45,15 @@ namespace Server.Models.Mapping
             // Relationships
             this.HasRequired(t => t.webpages_Users)
                 .WithOptional(t => t.webpages_Membership);
+            // Relationships
+            //this.HasMany(t => t.webpages_Roles)
+            //    .WithMany(t => t.webpages_Membership)
+            //    .Map(m =>
+            //    {
+            //        m.ToTable("webpages_UsersInRoles");
+            //        m.MapLeftKey("RoleId");
+            //        m.MapRightKey("UserId");
+            //    });
 
         }
     }

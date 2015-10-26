@@ -1,9 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace Server.Models
 {
-    public partial class webpages_RoleLevels
+    public class webpages_RoleLevels
     {
         public webpages_RoleLevels()
         {

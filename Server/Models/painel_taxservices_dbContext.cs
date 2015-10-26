@@ -1,6 +1,6 @@
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using Server.Models.Mapping;
+using Server.Models.Object;
 
 namespace Server.Models
 {
@@ -14,29 +14,12 @@ namespace Server.Models
         public painel_taxservices_dbContext()
             : base("Name=painel_taxservices_dbContext")
         {
+            Database.CommandTimeout = 60; // 1 minuto
         }
 
         public DbSet<ConnectionString> ConnectionStrings { get; set; }
         public DbSet<LogExceptionWinApp> LogExceptionWinApps { get; set; }
-        public DbSet<tbLogAcessoUsuario> tbLogAcessoUsuarios { get; set; }
-        public DbSet<tbAdquirente> tbAdquirentes { get; set; }
-        public DbSet<tbBancoParametro> tbBancoParametroes { get; set; }
-        public DbSet<tbBandeiraTef> tbBandeiraTefs { get; set; }
-        public DbSet<tbContaCorrente> tbContaCorrentes { get; set; }
-        public DbSet<tbContaCorrente_tbLoginAdquirenteEmpresa> tbContaCorrente_tbLoginAdquirenteEmpresa { get; set; }
-        public DbSet<tbEstadoTransacaoTef> tbEstadoTransacaoTefs { get; set; }
-        public DbSet<tbExecucaoLog> tbExecucaoLogs { get; set; }
-        public DbSet<tbExtrato> tbExtratoes { get; set; }
-        public DbSet<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresas { get; set; }
-        public DbSet<tbModoEntradaTef> tbModoEntradaTefs { get; set; }
-        public DbSet<tbProdutoTef> tbProdutoTefs { get; set; }
-        public DbSet<tbRecebimentoTEF> tbRecebimentoTEFs { get; set; }
-        public DbSet<tbRedeTef> tbRedeTefs { get; set; }
-        public DbSet<tbSituacaoRedeTef> tbSituacaoRedeTefs { get; set; }
-        public DbSet<tbTipoProdutoTef> tbTipoProdutoTefs { get; set; }
-        public DbSet<tbTransacaoTef> tbTransacaoTefs { get; set; }
         public DbSet<Bandeira> Bandeiras { get; set; }
-        public DbSet<BandeirasTef> BandeirasTefs { get; set; }
         public DbSet<Carga> Cargas { get; set; }
         public DbSet<ConciliacaoPagamento> ConciliacaoPagamentos { get; set; }
         public DbSet<ConciliacaoVenda> ConciliacaoVendas { get; set; }
@@ -156,7 +139,6 @@ namespace Server.Models
         public DbSet<tabaudit> tabaudits { get; set; }
         public DbSet<TabExp> TabExps { get; set; }
         public DbSet<TabMeiosPag> TabMeiosPags { get; set; }
-        public DbSet<tbEstadoTransacaoTef1> tbEstadoTransacaoTef1 { get; set; }
         public DbSet<tbNotaDaGente> tbNotaDaGentes { get; set; }
         public DbSet<tipo_transacao> tipo_transacao { get; set; }
         public DbSet<tipoproduto> tipoprodutoes { get; set; }
@@ -164,12 +146,19 @@ namespace Server.Models
         public DbSet<transaco> transacoes { get; set; }
         public DbSet<uf> ufs { get; set; }
         public DbSet<usuario> usuarios { get; set; }
+        public DbSet<tbBandeiraTef> tbBandeiraTefs { get; set; }
+        public DbSet<tbProdutoTef> tbProdutoTefs { get; set; }
+        public DbSet<tbModoEntradaTef> tbModoEntradaTefs { get; set; }
+        public DbSet<tbEstadoTransacaoTef> tbEstadoTransacaoTefs { get; set; }
+        public DbSet<tbRedeTef> tbRedeTefs { get; set; }
+        public DbSet<tbSituacaoRedeTef> tbSituacaoRedeTefs { get; set; }
+        public DbSet<tbTipoProdutoTef> tbTipoProdutoTefs { get; set; }
+        public DbSet<tbTransacaoTef> tbTransacaoTefs { get; set; }
         public DbSet<webpages_Controllers> webpages_Controllers { get; set; }
         public DbSet<webpages_Membership> webpages_Membership { get; set; }
         public DbSet<webpages_Methods> webpages_Methods { get; set; }
         public DbSet<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }
         public DbSet<webpages_Permissions> webpages_Permissions { get; set; }
-        public DbSet<webpages_RoleLevels> webpages_RoleLevels { get; set; }
         public DbSet<webpages_Roles> webpages_Roles { get; set; }
         public DbSet<webpages_Users> webpages_Users { get; set; }
         public DbSet<webpages_UsersInRoles> webpages_UsersInRoles { get; set; }
@@ -216,36 +205,45 @@ namespace Server.Models
         public DbSet<RedeMed> RedeMeds { get; set; }
         public DbSet<Sodexo> Sodexoes { get; set; }
         public DbSet<TaxaAdministracao> TaxaAdministracaos { get; set; }
-        public DbSet<tbMaquinaProcessamento> tbMaquinaProcessamentoes { get; set; }
+        public DbSet<tbRecebimentoTEF> tbRecebimentoTEFs { get; set; }
         public DbSet<TerminalLogico> TerminalLogicoes { get; set; }
         public DbSet<TicketCar> TicketCars { get; set; }
         public DbSet<ValeCard> ValeCards { get; set; }
-        public DbSet<empresa1> empresa1 { get; set; }
-        public DbSet<nfe_saida1> nfe_saida1 { get; set; }
+        public DbSet<webpages_RoleLevels> webpages_RoleLevels { get; set; }
+        public DbSet<tbContaCorrente> tbContaCorrentes { get; set; }
+        public DbSet<tbContaCorrente_tbLoginAdquirenteEmpresa> tbContaCorrente_tbLoginAdquirenteEmpresas { get; set; }
+        public DbSet<tbExtrato> tbExtratos { get; set; }
+        public DbSet<tbRebimentoResumo> tbRebimentoResumos { get; set; }
+        public DbSet<tbLogAcessoUsuario> tbLogAcessoUsuarios { get; set; }
+        public DbSet<tbAdquirente> tbAdquirentes { get; set; }
+        public DbSet<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresas { get; set; }
+        public DbSet<tbManifesto> tbManifestos { get; set; }
+        public DbSet<tbLogManifesto> tbLogManifestos { get; set; }
+        public DbSet<tbBancoParametro> tbBancoParametro { get; set; }
+        public DbSet<tbEmpresa> tbEmpresas { get; set; }
+        public DbSet<tbEmpresaFilial> tbEmpresaFiliais { get; set; }
+        public DbSet<tbEmpresaGrupo> tbEmpresaGrupos { get; set; }
+        public DbSet<tbLogErro> tbLogErros { get; set; }
+        public DbSet<tbControleNSU> tbControleNSUs { get; set; }
+        public DbSet<tbCanal> tbCanals { get; set; }
+        public DbSet<tbNews> tbNewss { get; set; }
+        public DbSet<tbCatalogo> tbCatalogos { get; set; }
+        public DbSet<tbNewsStatus> tbNewsStatuss { get; set; }        
+        public DbSet<tbDispositivoUsuario> tbDispositivoUsuarios { get; set; }
+        public DbSet<tbLogCarga> tbLogCargas { get; set; }
+        public DbSet<tbLogCargaDetalhe> tbLogCargaDetalhes { get; set; }
+        public DbSet<tbAssinante> tbAssinantes { get; set; }
+        public DbSet<tbBandeira> tbBandeiras { get; set; }
+        public DbSet<tbRecebimentoAjuste> tbRecebimentoAjustes { get; set; }
+        public DbSet<tbTerminalLogico> tbTerminalLogicos { get; set; }
+        public DbSet<tbRecebimentoResumoManual> tbRecebimentoResumoManuals { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new ConnectionStringMap());
             modelBuilder.Configurations.Add(new LogExceptionWinAppMap());
-            modelBuilder.Configurations.Add(new tbLogAcessoUsuarioMap());
-            modelBuilder.Configurations.Add(new tbAdquirenteMap());
-            modelBuilder.Configurations.Add(new tbBancoParametroMap());
-            modelBuilder.Configurations.Add(new tbBandeiraTefMap());
-            modelBuilder.Configurations.Add(new tbContaCorrenteMap());
-            modelBuilder.Configurations.Add(new tbContaCorrente_tbLoginAdquirenteEmpresaMap());
-            modelBuilder.Configurations.Add(new tbEstadoTransacaoTefMap());
-            modelBuilder.Configurations.Add(new tbExecucaoLogMap());
-            modelBuilder.Configurations.Add(new tbExtratoMap());
-            modelBuilder.Configurations.Add(new tbLoginAdquirenteEmpresaMap());
-            modelBuilder.Configurations.Add(new tbModoEntradaTefMap());
-            modelBuilder.Configurations.Add(new tbProdutoTefMap());
-            modelBuilder.Configurations.Add(new tbRecebimentoTEFMap());
-            modelBuilder.Configurations.Add(new tbRedeTefMap());
-            modelBuilder.Configurations.Add(new tbSituacaoRedeTefMap());
-            modelBuilder.Configurations.Add(new tbTipoProdutoTefMap());
-            modelBuilder.Configurations.Add(new tbTransacaoTefMap());
             modelBuilder.Configurations.Add(new BandeiraMap());
-            modelBuilder.Configurations.Add(new BandeirasTefMap());
             modelBuilder.Configurations.Add(new CargaMap());
             modelBuilder.Configurations.Add(new ConciliacaoPagamentoMap());
             modelBuilder.Configurations.Add(new ConciliacaoVendaMap());
@@ -365,7 +363,6 @@ namespace Server.Models
             modelBuilder.Configurations.Add(new tabauditMap());
             modelBuilder.Configurations.Add(new TabExpMap());
             modelBuilder.Configurations.Add(new TabMeiosPagMap());
-            modelBuilder.Configurations.Add(new tbEstadoTransacaoTef1Map());
             modelBuilder.Configurations.Add(new tbNotaDaGenteMap());
             modelBuilder.Configurations.Add(new tipo_transacaoMap());
             modelBuilder.Configurations.Add(new tipoprodutoMap());
@@ -373,12 +370,19 @@ namespace Server.Models
             modelBuilder.Configurations.Add(new transacoMap());
             modelBuilder.Configurations.Add(new ufMap());
             modelBuilder.Configurations.Add(new usuarioMap());
+            modelBuilder.Configurations.Add(new tbBandeiraTefMap());
+            modelBuilder.Configurations.Add(new tbEstadoTransacaoTefMap());
+            modelBuilder.Configurations.Add(new tbModoEntradaTefMap());
+            modelBuilder.Configurations.Add(new tbProdutoTefMap());
+            modelBuilder.Configurations.Add(new tbRedeTefMap());
+            modelBuilder.Configurations.Add(new tbSituacaoRedeTefMap());
+            modelBuilder.Configurations.Add(new tbTipoProdutoTefMap());
+            modelBuilder.Configurations.Add(new tbTransacaoTefMap()); 
             modelBuilder.Configurations.Add(new webpages_ControllersMap());
             modelBuilder.Configurations.Add(new webpages_MembershipMap());
             modelBuilder.Configurations.Add(new webpages_MethodsMap());
             modelBuilder.Configurations.Add(new webpages_OAuthMembershipMap());
             modelBuilder.Configurations.Add(new webpages_PermissionsMap());
-            modelBuilder.Configurations.Add(new webpages_RoleLevelsMap());
             modelBuilder.Configurations.Add(new webpages_RolesMap());
             modelBuilder.Configurations.Add(new webpages_UsersMap());
             modelBuilder.Configurations.Add(new webpages_UsersInRolesMap());
@@ -425,12 +429,38 @@ namespace Server.Models
             modelBuilder.Configurations.Add(new RedeMedMap());
             modelBuilder.Configurations.Add(new SodexoMap());
             modelBuilder.Configurations.Add(new TaxaAdministracaoMap());
-            modelBuilder.Configurations.Add(new tbMaquinaProcessamentoMap());
+            modelBuilder.Configurations.Add(new tbRecebimentoTEFMap());
             modelBuilder.Configurations.Add(new TerminalLogicoMap());
             modelBuilder.Configurations.Add(new TicketCarMap());
             modelBuilder.Configurations.Add(new ValeCardMap());
-            modelBuilder.Configurations.Add(new empresa1Map());
-            modelBuilder.Configurations.Add(new nfe_saida1Map());
+            modelBuilder.Configurations.Add(new webpages_RoleLevelsMap());
+            modelBuilder.Configurations.Add(new tbContaCorrenteMap());
+            modelBuilder.Configurations.Add(new tbContaCorrente_tbLoginAdquirenteEmpresaMap());
+            modelBuilder.Configurations.Add(new tbExtratoMap());
+            modelBuilder.Configurations.Add(new tbRebimentoResumoMap());
+            modelBuilder.Configurations.Add(new tbLogAcessoUsuarioMap());
+            modelBuilder.Configurations.Add(new tbAdquirenteMap());
+            modelBuilder.Configurations.Add(new tbLoginAdquirenteEmpresaMap());
+            modelBuilder.Configurations.Add(new tbManifestoMap());
+            modelBuilder.Configurations.Add(new tbLogManifestoMap());
+            modelBuilder.Configurations.Add(new tbBancoParametroMap());
+            modelBuilder.Configurations.Add(new tbEmpresaFilialMap());
+            modelBuilder.Configurations.Add(new tbEmpresaGrupoMap());
+            modelBuilder.Configurations.Add(new tbEmpresaMap());
+            modelBuilder.Configurations.Add(new tbLogErroMap());
+            modelBuilder.Configurations.Add(new tbControleNSUMap());
+            modelBuilder.Configurations.Add(new tbCanalMap());
+            modelBuilder.Configurations.Add(new tbNewsMap());
+            modelBuilder.Configurations.Add(new tbCatalogoMap());
+            modelBuilder.Configurations.Add(new tbNewsStatusMap());
+            modelBuilder.Configurations.Add(new tbDispositivoUsuarioMap());
+            modelBuilder.Configurations.Add(new tbLogCargaMap());
+            modelBuilder.Configurations.Add(new tbLogCargaDetalheMap());
+            modelBuilder.Configurations.Add(new tbAssinanteMap());
+            modelBuilder.Configurations.Add(new tbBandeiraMap());
+            modelBuilder.Configurations.Add(new tbRecebimentoAjusteMap());
+            modelBuilder.Configurations.Add(new tbTerminalLogicoMap());
+            modelBuilder.Configurations.Add(new tbRecebimentoResumoManualMap());
         }
     }
 }

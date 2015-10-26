@@ -1,5 +1,10 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Server.Models.Object;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Server.Models.Mapping
 {
@@ -11,18 +16,25 @@ namespace Server.Models.Mapping
             this.HasKey(t => new { t.cdBanco, t.dsMemo });
 
             // Properties
+            this.Property(t => t.dsMemo)
+                .IsRequired();
+
             this.Property(t => t.cdBanco)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(3);
 
-            this.Property(t => t.dsMemo)
-                .IsRequired()
-                .HasMaxLength(50);
-
             this.Property(t => t.dsTipo)
                 .IsRequired()
                 .HasMaxLength(30);
+
+            this.Property(t => t.nrCnpj)
+                .IsFixedLength()
+                .HasMaxLength(14);
+
+            this.Property(t => t.dsTipoCartao)
+                .HasMaxLength(10);
+
 
             // Table & Column Mappings
             this.ToTable("tbBancoParametro", "card");
@@ -30,11 +42,21 @@ namespace Server.Models.Mapping
             this.Property(t => t.dsMemo).HasColumnName("dsMemo");
             this.Property(t => t.cdAdquirente).HasColumnName("cdAdquirente");
             this.Property(t => t.dsTipo).HasColumnName("dsTipo");
+            this.Property(t => t.flVisivel).HasColumnName("flVisivel");
+            this.Property(t => t.nrCnpj).HasColumnName("nrCnpj");
+            this.Property(t => t.dsTipoCartao).HasColumnName("dsTipoCartao");
+            this.Property(t => t.cdBandeira).HasColumnName("cdBandeira");
 
             // Relationships
             this.HasOptional(t => t.tbAdquirente)
-                .WithMany(t => t.tbBancoParametroes)
+                .WithMany(t => t.tbBancoParametros)
                 .HasForeignKey(d => d.cdAdquirente);
+            this.HasOptional(t => t.empresa)
+                .WithMany(t => t.tbBancoParametros)
+                .HasForeignKey(d => d.nrCnpj);
+            this.HasOptional(t => t.tbBandeira)
+                .WithMany(t => t.tbBancoParametros)
+                .HasForeignKey(d => d.cdBandeira);
 
         }
     }

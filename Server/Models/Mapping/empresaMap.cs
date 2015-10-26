@@ -90,6 +90,12 @@ namespace Server.Models.Mapping
             this.Property(t => t.id_grupo).HasColumnName("id_grupo");
             this.Property(t => t.filial).HasColumnName("filial");
             this.Property(t => t.nu_inscEstadual).HasColumnName("nu_inscEstadual");
+
+            // Relationships
+            this.HasRequired(t => t.grupo_empresa)
+                .WithMany(t => t.empresas)
+                .HasForeignKey(d => d.id_grupo);
+
         }
     }
 }

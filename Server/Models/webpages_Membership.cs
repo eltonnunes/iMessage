@@ -7,7 +7,7 @@ namespace Server.Models
     {
         public webpages_Membership()
         {
-            this.webpages_UsersInRoles = new List<webpages_UsersInRoles>();
+            this.webpages_Roles = new List<webpages_Roles>();
         }
 
         public int UserId { get; set; }
@@ -21,7 +21,9 @@ namespace Server.Models
         public string PasswordSalt { get; set; }
         public string PasswordVerificationToken { get; set; }
         public Nullable<System.DateTime> PasswordVerificationTokenExpirationDate { get; set; }
-        public virtual ICollection<webpages_UsersInRoles> webpages_UsersInRoles { get; set; }
         public virtual webpages_Users webpages_Users { get; set; }
+        public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
+        public virtual ICollection<webpages_UsersInRoles> webpages_UsersInRoles { get; set; }
+
     }
 }

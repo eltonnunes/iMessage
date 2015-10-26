@@ -29,7 +29,6 @@ namespace Server.Models.Mapping
             this.Property(t => t.dtaExecucaoFim).HasColumnName("dtaExecucaoFim");
             this.Property(t => t.dtaFiltroTransacoesFinal).HasColumnName("dtaFiltroTransacoesFinal");
             this.Property(t => t.dtaExecucaoProxima).HasColumnName("dtaExecucaoProxima");
-            this.Property(t => t.cdExecucaoLog).HasColumnName("cdExecucaoLog");
 
             // Relationships
             this.HasOptional(t => t.LoginOperadora)

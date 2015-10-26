@@ -19,12 +19,24 @@ namespace Server.Models.Mapping
             this.ToTable("webpages_Roles");
             this.Property(t => t.RoleId).HasColumnName("RoleId");
             this.Property(t => t.RoleName).HasColumnName("RoleName");
-            this.Property(t => t.RoleLevel).HasColumnName("RoleLevel");
+
+
+
+            // Relationships
+            //this.HasMany(t => t.webpages_Membership)
+            //    .WithMany(t => t.webpages_Roles)
+            //    .Map(m =>
+            //        {
+            //            m.ToTable("webpages_UsersInRoles");
+            //            m.MapLeftKey("RoleId");
+            //            m.MapRightKey("UserId");
+            //        });
 
             // Relationships
             this.HasRequired(t => t.webpages_RoleLevels)
                 .WithMany(t => t.webpages_Roles)
                 .HasForeignKey(d => d.RoleLevel);
+
 
         }
     }

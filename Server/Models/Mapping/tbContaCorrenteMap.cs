@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Server.Models.Mapping
@@ -40,12 +40,12 @@ namespace Server.Models.Mapping
             this.Property(t => t.flAtivo).HasColumnName("flAtivo");
 
             // Relationships
-            this.HasRequired(t => t.grupo_empresa)
-                .WithMany(t => t.tbContaCorrentes)
-                .HasForeignKey(d => d.cdGrupo);
             this.HasRequired(t => t.empresa)
                 .WithMany(t => t.tbContaCorrentes)
                 .HasForeignKey(d => d.nrCnpj);
+            this.HasRequired(t => t.grupo_empresa)
+                .WithMany(t => t.tbContaCorrentes)
+                .HasForeignKey(d => d.cdGrupo);
 
         }
     }

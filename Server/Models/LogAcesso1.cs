@@ -9,7 +9,7 @@ namespace Server.Models
         public Nullable<int> idController { get; set; }
         public Nullable<int> idMethod { get; set; }
         public System.DateTime dtAcesso { get; set; }
-        public Nullable<bool> flMobile { get; set; }
+        public bool flMobile { get; set; }
         public string dsUserAgent { get; set; }
         public virtual webpages_Controllers webpages_Controllers { get; set; }
         public virtual webpages_Methods webpages_Methods { get; set; }

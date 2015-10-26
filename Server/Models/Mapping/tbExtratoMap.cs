@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Server.Models.Mapping
@@ -13,22 +13,17 @@ namespace Server.Models.Mapping
             // Properties
             this.Property(t => t.nrDocumento)
                 .HasMaxLength(20);
-
-            this.Property(t => t.dsDocumento)
-                .HasMaxLength(50);
-
+            this.Property(t => t.dsDocumento);
+                //.HasMaxLength(50);
             this.Property(t => t.dsTipo)
-                .HasMaxLength(30);
-
-            this.Property(t => t.dsArquivo)
-                .HasMaxLength(255);
+                .HasMaxLength(30); 
 
             // Table & Column Mappings
             this.ToTable("tbExtrato", "card");
             this.Property(t => t.idExtrato).HasColumnName("idExtrato");
             this.Property(t => t.cdContaCorrente).HasColumnName("cdContaCorrente");
-            this.Property(t => t.dtExtrato).HasColumnName("dtExtrato");
             this.Property(t => t.nrDocumento).HasColumnName("nrDocumento");
+            this.Property(t => t.dtExtrato).HasColumnName("dtExtrato");
             this.Property(t => t.dsDocumento).HasColumnName("dsDocumento");
             this.Property(t => t.vlMovimento).HasColumnName("vlMovimento");
             this.Property(t => t.dsTipo).HasColumnName("dsTipo");
@@ -36,9 +31,8 @@ namespace Server.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.tbContaCorrente)
-                .WithMany(t => t.tbExtratoes)
+                .WithMany(t => t.tbExtratos)
                 .HasForeignKey(d => d.cdContaCorrente);
-
         }
     }
 }

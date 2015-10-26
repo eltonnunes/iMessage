@@ -9,8 +9,8 @@ namespace Server.Models
         {
             this.ConnectionStrings = new List<ConnectionString>();
             this.LogExceptionWinApps = new List<LogExceptionWinApp>();
-            this.tbContaCorrentes = new List<tbContaCorrente>();
             this.Bandeiras = new List<Bandeira>();
+            this.empresas = new List<empresa>();
             this.grupo_baseCnpj = new List<grupo_baseCnpj>();
             this.ConciliacaoRecebimentoes = new List<ConciliacaoRecebimento>();
             this.mercas = new List<merca>();
@@ -20,6 +20,8 @@ namespace Server.Models
             this.Bandeiras1 = new List<Bandeira1>();
             this.Operadoras = new List<Operadora>();
             this.LoginOperadoras = new List<LoginOperadora>();
+            this.tbContaCorrentes = new List<tbContaCorrente>();
+            this.tbLoginAdquirenteEmpresas = new List<tbLoginAdquirenteEmpresa>();
         }
 
         public int id_grupo { get; set; }
@@ -31,10 +33,11 @@ namespace Server.Models
         public bool fl_proinfo { get; set; }
         public Nullable<int> id_vendedor { get; set; }
         public bool fl_ativo { get; set; }
+        public byte cdPrioridade { get; set; }
         public virtual ICollection<ConnectionString> ConnectionStrings { get; set; }
         public virtual ICollection<LogExceptionWinApp> LogExceptionWinApps { get; set; }
-        public virtual ICollection<tbContaCorrente> tbContaCorrentes { get; set; }
         public virtual ICollection<Bandeira> Bandeiras { get; set; }
+        public virtual ICollection<empresa> empresas { get; set; }
         public virtual ICollection<grupo_baseCnpj> grupo_baseCnpj { get; set; }
         public virtual ICollection<ConciliacaoRecebimento> ConciliacaoRecebimentoes { get; set; }
         public virtual ICollection<merca> mercas { get; set; }
@@ -43,7 +46,9 @@ namespace Server.Models
         public virtual ICollection<webpages_Users> webpages_Users { get; set; }
         public virtual ICollection<Bandeira1> Bandeiras1 { get; set; }
         public virtual ICollection<Operadora> Operadoras { get; set; }
-        public virtual webpages_Users webpages_Users1 { get; set; }
         public virtual ICollection<LoginOperadora> LoginOperadoras { get; set; }
+        public virtual webpages_Users Vendedor { get; set; }
+        public virtual ICollection<tbContaCorrente> tbContaCorrentes { get; set; }
+        public virtual ICollection<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresas { get; set; }
     }
 }

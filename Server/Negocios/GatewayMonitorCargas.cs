@@ -11,7 +11,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 
-namespace api.Negocios.SignalR
+namespace Server.Negocios.SignalR
 {
     public class GatewayMonitorCargas
     {

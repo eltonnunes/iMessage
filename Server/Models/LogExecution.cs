@@ -22,7 +22,6 @@ namespace Server.Models
         public Nullable<System.DateTime> dtaExecucaoFim { get; set; }
         public Nullable<System.DateTime> dtaFiltroTransacoesFinal { get; set; }
         public Nullable<System.DateTime> dtaExecucaoProxima { get; set; }
-        public Nullable<int> cdExecucaoLog { get; set; }
         public virtual ICollection<LogExecutionException> LogExecutionExceptions { get; set; }
         public virtual LoginOperadora LoginOperadora { get; set; }
     }

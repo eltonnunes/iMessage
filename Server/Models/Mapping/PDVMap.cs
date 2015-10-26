@@ -21,11 +21,8 @@ namespace Server.Models.Mapping
                 .HasMaxLength(30);
 
             this.Property(t => t.CodPdvERP)
-                .HasMaxLength(15);
-
-            this.Property(t => t.cdEmpresaTEF)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(15);
 
             this.Property(t => t.CodPdvHostPagamento)
                 .IsRequired()
@@ -37,7 +34,6 @@ namespace Server.Models.Mapping
             this.Property(t => t.CNPJjFilial).HasColumnName("CNPJjFilial");
             this.Property(t => t.DecricaoPdv).HasColumnName("DecricaoPdv");
             this.Property(t => t.CodPdvERP).HasColumnName("CodPdvERP");
-            this.Property(t => t.cdEmpresaTEF).HasColumnName("cdEmpresaTEF");
             this.Property(t => t.CodPdvHostPagamento).HasColumnName("CodPdvHostPagamento");
             this.Property(t => t.cdGrupo).HasColumnName("cdGrupo");
 

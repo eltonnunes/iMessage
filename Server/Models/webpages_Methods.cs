@@ -7,7 +7,6 @@ namespace Server.Models
     {
         public webpages_Methods()
         {
-            this.tbLogAcessoUsuarios = new List<tbLogAcessoUsuario>();
             this.LogAcesso1 = new List<LogAcesso1>();
             this.webpages_Permissions = new List<webpages_Permissions>();
         }
@@ -17,7 +16,6 @@ namespace Server.Models
         public string nm_method { get; set; }
         public bool fl_menu { get; set; }
         public int id_controller { get; set; }
-        public virtual ICollection<tbLogAcessoUsuario> tbLogAcessoUsuarios { get; set; }
         public virtual webpages_Controllers webpages_Controllers { get; set; }
         public virtual ICollection<LogAcesso1> LogAcesso1 { get; set; }
         public virtual ICollection<webpages_Permissions> webpages_Permissions { get; set; }

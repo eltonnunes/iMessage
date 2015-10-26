@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Server.Models.Mapping
@@ -17,6 +17,9 @@ namespace Server.Models.Mapping
             this.Property(t => t.cdLoginAdquirenteEmpresa)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
+            this.Property(t => t.dtInicio)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
             // Table & Column Mappings
             this.ToTable("tbContaCorrente_tbLoginAdquirenteEmpresa", "card");
             this.Property(t => t.cdContaCorrente).HasColumnName("cdContaCorrente");
@@ -26,10 +29,10 @@ namespace Server.Models.Mapping
 
             // Relationships
             this.HasRequired(t => t.tbContaCorrente)
-                .WithMany(t => t.tbContaCorrente_tbLoginAdquirenteEmpresa)
+                .WithMany(t => t.tbContaCorrente_tbLoginAdquirenteEmpresas)
                 .HasForeignKey(d => d.cdContaCorrente);
             this.HasRequired(t => t.tbLoginAdquirenteEmpresa)
-                .WithMany(t => t.tbContaCorrente_tbLoginAdquirenteEmpresa)
+                .WithMany(t => t.tbContaCorrente_tbLoginAdquirenteEmpresas)
                 .HasForeignKey(d => d.cdLoginAdquirenteEmpresa);
 
         }

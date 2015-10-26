@@ -34,7 +34,6 @@ namespace Server.Models.Mapping
             this.Property(t => t.nu_cnpjEmpresa).HasColumnName("nu_cnpjEmpresa");
             this.Property(t => t.nu_cnpjBaseEmpresa).HasColumnName("nu_cnpjBaseEmpresa");
             this.Property(t => t.id_pessoa).HasColumnName("id_pessoa");
-            this.Property(t => t.fl_ativo).HasColumnName("fl_ativo");
 
             // Relationships
             this.HasOptional(t => t.empresa)

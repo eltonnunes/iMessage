@@ -8,7 +8,6 @@ namespace Server.Models
         public LoginOperadora()
         {
             this.LogExecutions = new List<LogExecution>();
-            this.tbMaquinaProcessamentoes = new List<tbMaquinaProcessamento>();
         }
 
         public int id { get; set; }
@@ -20,10 +19,12 @@ namespace Server.Models
         public int idOperadora { get; set; }
         public int idGrupo { get; set; }
         public string estabelecimento { get; set; }
+        public string nrCNPJCentralizadora { get; set; }
+        public string cdEstabelecimentoConsulta { get; set; }
         public virtual empresa empresa { get; set; }
         public virtual grupo_empresa grupo_empresa { get; set; }
         public virtual ICollection<LogExecution> LogExecutions { get; set; }
         public virtual Operadora Operadora { get; set; }
-        public virtual ICollection<tbMaquinaProcessamento> tbMaquinaProcessamentoes { get; set; }
+        public virtual empresa empresaCentralizadora { get; set; }
     }
 }

@@ -11,9 +11,6 @@ namespace Server.Models.Mapping
             this.HasKey(t => t.dtAcesso);
 
             // Properties
-            this.Property(t => t.dsUserAgent)
-                .HasMaxLength(255);
-
             // Table & Column Mappings
             this.ToTable("LogAcesso", "log");
             this.Property(t => t.idUsers).HasColumnName("idUsers");

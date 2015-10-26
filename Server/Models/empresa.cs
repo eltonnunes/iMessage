@@ -1,3 +1,4 @@
+using Server.Models.Object;
 using System;
 using System.Collections.Generic;
 
@@ -7,8 +8,6 @@ namespace Server.Models
     {
         public empresa()
         {
-            this.tbContaCorrentes = new List<tbContaCorrente>();
-            this.tbLoginAdquirenteEmpresas = new List<tbLoginAdquirenteEmpresa>();
             this.Cargas = new List<Carga>();
             this.PDVs = new List<PDV>();
             this.nfe_entrada = new List<nfe_entrada>();
@@ -34,6 +33,14 @@ namespace Server.Models
             this.LoginOperadoras = new List<LoginOperadora>();
             this.ConciliacaoPagamentosPos = new List<ConciliacaoPagamentosPos>();
             this.TaxaAdministracaos = new List<TaxaAdministracao>();
+            this.tbContaCorrentes = new List<tbContaCorrente>();
+            this.tbLoginAdquirenteEmpresas = new List<tbLoginAdquirenteEmpresa>();
+            this.tbBancoParametros = new List<tbBancoParametro>();
+            this.tbTerminalLogicos = new List<tbTerminalLogico>();
+            this.tbRecebimentoAjustes = new List<tbRecebimentoAjuste>();
+            this.tbLogCargas = new List<tbLogCarga>();
+            this.tbLoginAdquirenteEmpresasCentralizador = new List<tbLoginAdquirenteEmpresa>();
+            this.LoginOperadorasCentralizador = new List<LoginOperadora>();
         }
 
         public string nu_cnpj { get; set; }
@@ -55,10 +62,9 @@ namespace Server.Models
         public int id_grupo { get; set; }
         public string filial { get; set; }
         public Nullable<long> nu_inscEstadual { get; set; }
-        public virtual ICollection<tbContaCorrente> tbContaCorrentes { get; set; }
-        public virtual ICollection<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresas { get; set; }
         public virtual ICollection<Carga> Cargas { get; set; }
         public virtual ICollection<PDV> PDVs { get; set; }
+        public virtual grupo_empresa grupo_empresa { get; set; }
         public virtual ICollection<nfe_entrada> nfe_entrada { get; set; }
         public virtual ICollection<nfe_saida> nfe_saida { get; set; }
         public virtual ICollection<pedido> pedidoes { get; set; }
@@ -82,5 +88,14 @@ namespace Server.Models
         public virtual ICollection<LoginOperadora> LoginOperadoras { get; set; }
         public virtual ICollection<ConciliacaoPagamentosPos> ConciliacaoPagamentosPos { get; set; }
         public virtual ICollection<TaxaAdministracao> TaxaAdministracaos { get; set; }
+        public virtual ICollection<tbContaCorrente> tbContaCorrentes { get; set; }
+        public virtual ICollection<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresas { get; set; }
+        public virtual ICollection<tbBancoParametro> tbBancoParametros { get; set; }
+        public virtual ICollection<tbLogCarga> tbLogCargas { get; set; }
+        public virtual ICollection<tbTerminalLogico> tbTerminalLogicos { get; set; }
+        //public virtual ICollection<tbRecebimento> tbRecebimentos { get; set; }
+        public virtual ICollection<tbRecebimentoAjuste> tbRecebimentoAjustes { get; set; }
+        public virtual ICollection<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresasCentralizador { get; set; }
+        public virtual ICollection<LoginOperadora> LoginOperadorasCentralizador { get; set; }
     }
 }

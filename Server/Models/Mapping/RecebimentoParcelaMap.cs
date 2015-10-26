@@ -32,15 +32,17 @@ namespace Server.Models.Mapping
             this.Property(t => t.dtaRecebimento).HasColumnName("dtaRecebimento");
             this.Property(t => t.valorDescontado).HasColumnName("valorDescontado");
             this.Property(t => t.idExtrato).HasColumnName("idExtrato");
+            this.Property(t => t.dtaRecebimentoEfetivo).HasColumnName("dtaRecebimentoEfetivo");
             this.Property(t => t.vlDescontadoAntecipacao).HasColumnName("vlDescontadoAntecipacao");
 
             // Relationships
-            this.HasOptional(t => t.tbExtrato)
-                .WithMany(t => t.RecebimentoParcelas)
-                .HasForeignKey(d => d.idExtrato);
             this.HasRequired(t => t.Recebimento)
                 .WithMany(t => t.RecebimentoParcelas)
                 .HasForeignKey(d => d.idRecebimento);
+            this.HasOptional(t => t.tbExtrato)
+                .WithMany(t => t.RecebimentoParcelas)
+                .HasForeignKey(d => d.idExtrato);
+
         }
     }
 }
