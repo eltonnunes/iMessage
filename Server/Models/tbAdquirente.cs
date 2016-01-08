@@ -15,6 +15,8 @@ namespace Server.Models
             this.tbTerminalLogicos = new List<tbTerminalLogico>();
             this.tbRecebimentoResumoManuals = new List<tbRecebimentoResumoManual>();
             this.tbLogCargas = new List<tbLogCarga>();
+            this.tbRecebimentoTitulos = new List<tbRecebimentoTitulo>();
+            this.tbFilaBootICards = new List<tbFilaBootICard>();
         }
 
         public int cdAdquirente { get; set; }
@@ -30,5 +32,7 @@ namespace Server.Models
         public virtual ICollection<tbBandeira> tbBandeiras { get; set; }
         public virtual ICollection<tbTerminalLogico> tbTerminalLogicos { get; set; }
         public virtual ICollection<tbRecebimentoResumoManual> tbRecebimentoResumoManuals { get; set; }
+        public virtual ICollection<tbRecebimentoTitulo> tbRecebimentoTitulos { get; set; }
+        public virtual ICollection<tbFilaBootICard> tbFilaBootICards { get; set; }
     }
 }

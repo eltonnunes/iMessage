@@ -503,6 +503,7 @@
     <Compile Include="Models\Mapping\tbEmpresaMap.cs" />
     <Compile Include="Models\Mapping\tbEstadoTransacaoTefMap.cs" />
     <Compile Include="Models\Mapping\tbExtratoMap.cs" />
+    <Compile Include="Models\Mapping\tbFilaBootICardMap.cs" />
     <Compile Include="Models\Mapping\tbIPTefMap.cs" />
     <Compile Include="Models\Mapping\tbLogAcessoUsuarioMap.cs" />
     <Compile Include="Models\Mapping\tbLogCargaDetalheMap.cs" />
@@ -520,6 +521,7 @@
     <Compile Include="Models\Mapping\tbRecebimentoAjusteMap.cs" />
     <Compile Include="Models\Mapping\tbRecebimentoResumoManualMap.cs" />
     <Compile Include="Models\Mapping\tbRecebimentoTEFMap.cs" />
+    <Compile Include="Models\Mapping\tbRecebimentoTituloMap.cs" />
     <Compile Include="Models\Mapping\tbRedeTefMap.cs" />
     <Compile Include="Models\Mapping\tbSitucaoRedeTefMap.cs" />
     <Compile Include="Models\Mapping\tbTerminalLogicoMap.cs" />
@@ -561,6 +563,7 @@
     <Compile Include="Models\notificacao_iservices.cs" />
     <Compile Include="Models\Nutricash.cs" />
     <Compile Include="Models\Object\EmpresaMonitor.cs" />
+    <Compile Include="Models\Object\FilaBootICard.cs" />
     <Compile Include="Models\Object\FiltroMonitorCargas.cs" />
     <Compile Include="Models\Object\GrupoEmpresaMonitor.cs" />
     <Compile Include="Models\Object\LogExecutionMonitor.cs" />
@@ -644,6 +647,7 @@
     <Compile Include="Models\tbEmpresaGrupo.cs" />
     <Compile Include="Models\tbEstadoTransacaoTef.cs" />
     <Compile Include="Models\tbExtrato.cs" />
+    <Compile Include="Models\tbFilaBootICard.cs" />
     <Compile Include="Models\tbIPTef.cs" />
     <Compile Include="Models\tbLogAcessoUsuario.cs" />
     <Compile Include="Models\tbLogCarga.cs" />
@@ -661,6 +665,7 @@
     <Compile Include="Models\tbRecebimentoAjuste.cs" />
     <Compile Include="Models\tbRecebimentoResumoManual.cs" />
     <Compile Include="Models\tbRecebimentoTEF.cs" />
+    <Compile Include="Models\tbRecebimentoTitulo.cs" />
     <Compile Include="Models\tbRedeTef.cs" />
     <Compile Include="Models\tbSituacaoRedeTef.cs" />
     <Compile Include="Models\tbTerminalLogico.cs" />
@@ -685,7 +690,7 @@
     <Compile Include="Models\webpages_Roles.cs" />
     <Compile Include="Models\webpages_Users.cs" />
     <Compile Include="Models\webpages_UsersInRoles.cs" />
-    <Compile Include="Negocios\GatewayLogExecution.cs" />
+    <Compile Include="Negocios\GatewayFilaBootICard.cs" />
     <Compile Include="Negocios\GatewayMonitorCargas.cs" />
     <Compile Include="App_Data\AssemblyInfo.cs" />
     <Compile Include="Negocios\GatewayMonitorCargasBoot.cs" />

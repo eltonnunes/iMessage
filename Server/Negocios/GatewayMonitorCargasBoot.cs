@@ -91,9 +91,6 @@ namespace Server.Negocios.SignalR
                 return;
             }
 
-            if (connection == null)
-                connection = new SqlConnection(ConfigurationManager.ConnectionStrings["painel_taxservices_dbContext"].ConnectionString);
-
             // YYYYMM
             int ano = filtro.Data.Length >= 4 ? Convert.ToInt32(filtro.Data.Substring(0, 4)) : DateTime.Now.Year;
             int mes = filtro.Data.Length >= 6 ? Convert.ToInt32(filtro.Data.Substring(4, 2)) : DateTime.Now.Month;
@@ -166,68 +163,82 @@ namespace Server.Negocios.SignalR
 
             semaforoExecucao.WaitOne();
 
-            // Obtém novo comando
-            command = new SqlCommand(script, connection);
 
-            // Registra evento de notificação
-            registraEventoNotificacao();
-
-
-            if (!connection.State.Equals(ConnectionState.Open)) connection.Open();
-
-            using (var reader = command.ExecuteReader())
+            try
             {
+                if (connection == null)
+                    connection = new SqlConnection(ConfigurationManager.ConnectionStrings["painel_taxservices_dbContext"].ConnectionString);
 
-                //if (list != null) list.Clear();
 
-                //semaforo.WaitOne();
+                // Obtém novo comando
+                command = new SqlCommand(script, connection);
 
-                list = reader.Cast<IDataRecord>()
-                                .Select(e => new MonitorCargasBoot
-                                {
-                                    idLogCargaDetalhe = Convert.ToInt32(e["idLogCargaDetalhe"]),
-                                    dtExecucaoIni = (DateTime)e["dtExecucaoIni"],
-                                    dtExecucaoFim = e["dtExecucaoFim"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtExecucaoFim"],
-                                    flStatus = Convert.ToByte(e["flStatus"]),
-                                    dsMensagem = Convert.ToString(e["dsMensagem"]),
-                                    dsModalidade = Convert.ToString(e["dsModalidade"]),
-                                    qtTransacoes = Convert.ToInt32(e["qtTransacoes"]),
-                                    vlTotalProcessado = Convert.ToDecimal(e["vlTotalProcessado"]),
-                                    tbLogCarga = new tbLogCargaMonitor
+                // Registra evento de notificação
+                registraEventoNotificacao();
+
+
+                if (!connection.State.Equals(ConnectionState.Open)) connection.Open();
+
+                using (var reader = command.ExecuteReader())
+                {
+
+                    //if (list != null) list.Clear();
+
+                    //semaforo.WaitOne();
+
+                    list = reader.Cast<IDataRecord>()
+                                    .Select(e => new MonitorCargasBoot
                                     {
-                                        idLogCarga = Convert.ToInt32(e["idLogCarga"]),
-                                        dtCompetencia = (DateTime)e["dtCompetencia"],
-                                        flStatusPagosAntecipacao = Convert.ToBoolean(e["flStatusPagosAntecipacao"]),
-                                        flStatusPagosCredito = Convert.ToBoolean(e["flStatusPagosCredito"]),
-                                        flStatusPagosDebito = Convert.ToBoolean(e["flStatusPagosDebito"]),
-                                        flStatusReceber = Convert.ToBoolean(e["flStatusReceber"]),
-                                        flStatusVendasCredito = Convert.ToBoolean(e["flStatusVendasCredito"]),
-                                        flStatusVendasDebito = Convert.ToBoolean(e["flStatusVendasDebito"]),
-                                    },
-                                    grupoempresa = new GrupoEmpresaMonitor
-                                    {
-                                        id_grupo = Convert.ToInt32(e["id_grupo"]),
-                                        ds_nome = Convert.ToString(e["ds_nome"]),
-                                    },
-                                    empresa = new EmpresaMonitor
-                                    {
-                                        nu_cnpj = Convert.ToString(e["nu_cnpj"]),
-                                        ds_fantasia = Convert.ToString(e["ds_fantasia"]),
-                                        filial = Convert.ToString(e["filial"]),
-                                    },
-                                    tbAdquirente = new tbAdquirenteMonitor
-                                    {
-                                        cdAdquirente = Convert.ToInt32(e["cdAdquirente"]),
-                                        nmAdquirente = Convert.ToString(e["nmAdquirente"])
-                                    }
-                                }).ToList<MonitorCargasBoot>();
+                                        idLogCargaDetalhe = Convert.ToInt32(e["idLogCargaDetalhe"]),
+                                        dtExecucaoIni = (DateTime)e["dtExecucaoIni"],
+                                        dtExecucaoFim = e["dtExecucaoFim"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtExecucaoFim"],
+                                        flStatus = Convert.ToByte(e["flStatus"]),
+                                        dsMensagem = Convert.ToString(e["dsMensagem"]),
+                                        dsModalidade = Convert.ToString(e["dsModalidade"]),
+                                        qtTransacoes = Convert.ToInt32(e["qtTransacoes"]),
+                                        vlTotalProcessado = Convert.ToDecimal(e["vlTotalProcessado"]),
+                                        tbLogCarga = new tbLogCargaMonitor
+                                        {
+                                            idLogCarga = Convert.ToInt32(e["idLogCarga"]),
+                                            dtCompetencia = (DateTime)e["dtCompetencia"],
+                                            flStatusPagosAntecipacao = Convert.ToBoolean(e["flStatusPagosAntecipacao"]),
+                                            flStatusPagosCredito = Convert.ToBoolean(e["flStatusPagosCredito"]),
+                                            flStatusPagosDebito = Convert.ToBoolean(e["flStatusPagosDebito"]),
+                                            flStatusReceber = Convert.ToBoolean(e["flStatusReceber"]),
+                                            flStatusVendasCredito = Convert.ToBoolean(e["flStatusVendasCredito"]),
+                                            flStatusVendasDebito = Convert.ToBoolean(e["flStatusVendasDebito"]),
+                                        },
+                                        grupoempresa = new GrupoEmpresaMonitor
+                                        {
+                                            id_grupo = Convert.ToInt32(e["id_grupo"]),
+                                            ds_nome = Convert.ToString(e["ds_nome"]),
+                                        },
+                                        empresa = new EmpresaMonitor
+                                        {
+                                            nu_cnpj = Convert.ToString(e["nu_cnpj"]),
+                                            ds_fantasia = Convert.ToString(e["ds_fantasia"]),
+                                            filial = Convert.ToString(e["filial"]),
+                                        },
+                                        tbAdquirente = new tbAdquirenteMonitor
+                                        {
+                                            cdAdquirente = Convert.ToInt32(e["cdAdquirente"]),
+                                            nmAdquirente = Convert.ToString(e["nmAdquirente"])
+                                        }
+                                    }).ToList<MonitorCargasBoot>();
 
-                alterouFiltro = false;
+                    alterouFiltro = false;
 
-                //semaforo.Release(1);
+                    //semaforo.Release(1);
+                }
             }
-
-            semaforoExecucao.Release(1);
+            catch (Exception e)
+            {
+                // ...
+            }
+            finally
+            {
+                semaforoExecucao.Release(1);
+            }
         }
 
 
@@ -337,9 +348,12 @@ namespace Server.Negocios.SignalR
 
         private List<dynamic> obtemListaComMudancas(SqlNotificationInfo Info = SqlNotificationInfo.Unknown)
         {
-            semaforo.WaitOne();
-
             List<dynamic> mudancas = new List<dynamic>();
+
+            if (filtro.Token == null || !Permissoes.Autenticado(filtro.Token))
+                return mudancas;
+
+            semaforo.WaitOne();
 
             List<MonitorCargasBoot> oldList = list != null ? list : new List<MonitorCargasBoot>();
 
@@ -379,7 +393,7 @@ namespace Server.Negocios.SignalR
             semaforo.WaitOne();
             initList();
             context.Clients.Client(connectionId).enviaLista(list == null ? new List<dynamic>() : getListaAgrupadaEOrdenada(list));
-            semaforo.Release();
+            semaforo.Release(1);
         }
 
         private void dependency_OnChange(object sender, SqlNotificationEventArgs e)
@@ -394,6 +408,9 @@ namespace Server.Negocios.SignalR
                 e.Info.Equals(SqlNotificationInfo.Update) ||
                 e.Info.Equals(SqlNotificationInfo.Delete))
             {
+                if (!Permissoes.Autenticado(filtro.Token))
+                    return;
+                
                 // Só envia se de fato tiveram mudanças para o filtro selecionado
                 List<dynamic> mudancas = obtemListaComMudancas(e.Info);
                 if (mudancas.Count > 0) context.Clients.Client(connectionId).enviaMudancas(mudancas[0]);

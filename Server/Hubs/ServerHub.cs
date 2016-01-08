@@ -13,6 +13,7 @@ namespace Server.Hubs
     {
         private GatewayMonitorCargas monitorCargas;
         private GatewayMonitorCargasBoot monitorCargasBoot;
+        private GatewayFilaBootICard filaBootICard;
 
         //[Authorize]
         public void obtemLista(FiltroMonitorCargas filtro)
@@ -50,5 +51,17 @@ namespace Server.Hubs
 
             monitorCargasBoot.enviaLista();
         }
+
+
+        ////[Authorize]
+        //public void obtemListaFilaBootICard()
+        //{
+        //    string token = Context.QueryString["token"];
+
+        //    if (filaBootICard == null) filaBootICard = new GatewayFilaBootICard(Context.ConnectionId, token);
+        //    else filaBootICard.setConnection(Context.ConnectionId, token);
+
+        //    filaBootICard.enviaLista();
+        //}
     }
 }

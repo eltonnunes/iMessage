@@ -32,8 +32,8 @@ namespace Server.Controllers
 
         public ActionResult Server()
         {
-            LogExecutionRepository log = new LogExecutionRepository();
-            log.GetData();
+            //LogExecutionRepository log = new LogExecutionRepository();
+            //log.GetData();
 
             ViewBag.Message = "Your server page.";
 

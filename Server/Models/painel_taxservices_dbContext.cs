@@ -1,4 +1,5 @@
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using Server.Models.Mapping;
 using Server.Models.Object;
 
@@ -14,7 +15,7 @@ namespace Server.Models
         public painel_taxservices_dbContext()
             : base("Name=painel_taxservices_dbContext")
         {
-            Database.CommandTimeout = 60; // 1 minuto
+            Database.CommandTimeout = 300; // 5 minutos
         }
 
         public DbSet<ConnectionString> ConnectionStrings { get; set; }
@@ -237,6 +238,7 @@ namespace Server.Models
         public DbSet<tbRecebimentoAjuste> tbRecebimentoAjustes { get; set; }
         public DbSet<tbTerminalLogico> tbTerminalLogicos { get; set; }
         public DbSet<tbRecebimentoResumoManual> tbRecebimentoResumoManuals { get; set; }
+        public DbSet<tbRecebimentoTitulo> tbRecebimentoTitulos { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -461,6 +463,7 @@ namespace Server.Models
             modelBuilder.Configurations.Add(new tbRecebimentoAjusteMap());
             modelBuilder.Configurations.Add(new tbTerminalLogicoMap());
             modelBuilder.Configurations.Add(new tbRecebimentoResumoManualMap());
+            modelBuilder.Configurations.Add(new tbRecebimentoTituloMap());
         }
     }
 }

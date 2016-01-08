@@ -85,9 +85,6 @@ namespace Server.Negocios.SignalR
                 return;
             }
 
-            if(connection == null)
-                connection = new SqlConnection(ConfigurationManager.ConnectionStrings["painel_taxservices_dbContext"].ConnectionString);
-
             // YYYYMM
             int ano = filtro.Data.Length >= 4 ? Convert.ToInt32(filtro.Data.Substring(0, 4)) : DateTime.Now.Year;
             int mes = filtro.Data.Length >= 6 ? Convert.ToInt32(filtro.Data.Substring(4, 2)) : DateTime.Now.Month;
@@ -150,56 +147,66 @@ namespace Server.Negocios.SignalR
 
             semaforoExecucao.WaitOne();
 
-            // Obtém novo comando
-            command = new SqlCommand(script, connection);
+            try
+            {
+                if (connection == null)
+                    connection = new SqlConnection(ConfigurationManager.ConnectionStrings["painel_taxservices_dbContext"].ConnectionString);
 
-            // Registra evento de notificação
-            registraEventoNotificacao();
+                // Obtém novo comando
+                command = new SqlCommand(script, connection);
+
+                // Registra evento de notificação
+                registraEventoNotificacao();
 
 
-            if (!connection.State.Equals(ConnectionState.Open)) connection.Open();
+                if (!connection.State.Equals(ConnectionState.Open)) connection.Open();
 
-            using (var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
+                {
+
+                    //if (list != null) list.Clear();
+
+                    //semaforo.WaitOne();
+
+                    list = reader.Cast<IDataRecord>()
+                                    .Select(e => new MonitorCargas
+                                    {
+                                        id = Convert.ToInt32(e["id"]),
+                                        dtaFiltroTransacoes = (DateTime)e["dtaFiltroTransacoes"],
+                                        statusExecution = Convert.ToString(e["statusExecution"]),
+                                        dtaExecucaoFim = e["dtaExecucaoFim"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoFim"],
+                                        dtaExecucaoProxima = e["dtaExecucaoProxima"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoProxima"],
+                                        loginOperadora = new LoginOperadoraMonitor
+                                        {
+                                            id = Convert.ToInt32(e["idLoginOperadora"]),
+                                            status = Convert.ToBoolean(e["status"]),
+                                        },
+                                        grupoempresa = new GrupoEmpresaMonitor
+                                        {
+                                            id_grupo = Convert.ToInt32(e["id_grupo"]),
+                                            ds_nome = Convert.ToString(e["ds_nome"]),
+                                        },
+                                        empresa = new EmpresaMonitor
+                                        {
+                                            nu_cnpj = Convert.ToString(e["nu_cnpj"]),
+                                            ds_fantasia = Convert.ToString(e["ds_fantasia"]),
+                                            filial = Convert.ToString(e["filial"]),
+                                        },
+                                        operadora = new OperadoraMonitor
+                                        {
+                                            id = Convert.ToInt32(e["idOperadora"]),
+                                            nmOperadora = Convert.ToString(e["nmOperadora"])
+                                        }
+                                    }).ToList<MonitorCargas>();
+
+                    alterouFiltro = false;
+
+                    //semaforo.Release(1);
+                }
+            }
+            catch (Exception e)
             {
 
-                //if (list != null) list.Clear();
-
-                //semaforo.WaitOne();
-
-                list = reader.Cast<IDataRecord>()
-                                .Select(e => new MonitorCargas
-                                {
-                                    id = Convert.ToInt32(e["id"]),
-                                    dtaFiltroTransacoes = (DateTime)e["dtaFiltroTransacoes"],
-                                    statusExecution = Convert.ToString(e["statusExecution"]),
-                                    dtaExecucaoFim = e["dtaExecucaoFim"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoFim"],
-                                    dtaExecucaoProxima = e["dtaExecucaoProxima"].Equals(DBNull.Value) ? (DateTime?)null : (DateTime)e["dtaExecucaoProxima"],
-                                    loginOperadora = new LoginOperadoraMonitor
-                                    {
-                                        id = Convert.ToInt32(e["idLoginOperadora"]),
-                                        status = Convert.ToBoolean(e["status"]),
-                                    },
-                                    grupoempresa = new GrupoEmpresaMonitor
-                                    {
-                                        id_grupo = Convert.ToInt32(e["id_grupo"]),
-                                        ds_nome = Convert.ToString(e["ds_nome"]),
-                                    },
-                                    empresa = new EmpresaMonitor
-                                    {
-                                        nu_cnpj = Convert.ToString(e["nu_cnpj"]),
-                                        ds_fantasia = Convert.ToString(e["ds_fantasia"]),
-                                        filial = Convert.ToString(e["filial"]),
-                                    },
-                                    operadora = new OperadoraMonitor
-                                    {
-                                        id = Convert.ToInt32(e["idOperadora"]),
-                                        nmOperadora = Convert.ToString(e["nmOperadora"])
-                                    }
-                                }).ToList<MonitorCargas>();
-
-                alterouFiltro = false;
-
-                //semaforo.Release(1);
             }
 
             semaforoExecucao.Release(1);
@@ -291,9 +298,12 @@ namespace Server.Negocios.SignalR
 
         private List<dynamic> obtemListaComMudancas(SqlNotificationInfo Info = SqlNotificationInfo.Unknown)
         {
-            semaforo.WaitOne();
-
             List<dynamic> mudancas = new List<dynamic>();
+
+            if (filtro.Token == null || !Permissoes.Autenticado(filtro.Token))
+                return mudancas;
+
+            semaforo.WaitOne();
 
             List<MonitorCargas> oldList = list != null ? list : new List<MonitorCargas>();
 

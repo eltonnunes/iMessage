@@ -14,6 +14,8 @@ namespace Server.Models
             this.grupo_empresa_vendedor = new List<grupo_empresa>();
             this.tbNewsStatus = new List<tbNewsStatus>();
             this.tbAssinantes = new List<tbAssinante>();
+            this.tbFilaBootICards = new List<tbFilaBootICard>();
+            this.tbFilaBootICardInserts = new List<tbFilaBootICard>();
         }
 
         public int id_users { get; set; }
@@ -35,5 +37,7 @@ namespace Server.Models
         public virtual ICollection<tbLogAcessoUsuario> tbLogAcessoUsuarios { get; set; }
         public virtual ICollection<tbNewsStatus> tbNewsStatus { get; set; }        
         public virtual ICollection<tbAssinante> tbAssinantes { get; set; }
+        public virtual ICollection<tbFilaBootICard> tbFilaBootICards { get; set; }
+        public virtual ICollection<tbFilaBootICard> tbFilaBootICardInserts { get; set; }
     }
 }

@@ -41,6 +41,8 @@ namespace Server.Models
             this.tbLogCargas = new List<tbLogCarga>();
             this.tbLoginAdquirenteEmpresasCentralizador = new List<tbLoginAdquirenteEmpresa>();
             this.LoginOperadorasCentralizador = new List<LoginOperadora>();
+            this.tbRecebimentoTitulos = new List<tbRecebimentoTitulo>();
+            this.tbFilaBootICards = new List<tbFilaBootICard>();
         }
 
         public string nu_cnpj { get; set; }
@@ -97,5 +99,7 @@ namespace Server.Models
         public virtual ICollection<tbRecebimentoAjuste> tbRecebimentoAjustes { get; set; }
         public virtual ICollection<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresasCentralizador { get; set; }
         public virtual ICollection<LoginOperadora> LoginOperadorasCentralizador { get; set; }
+        public virtual ICollection<tbRecebimentoTitulo> tbRecebimentoTitulos { get; set; }
+        public virtual ICollection<tbFilaBootICard> tbFilaBootICards { get; set; }
     }
 }

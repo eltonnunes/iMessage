@@ -22,6 +22,7 @@ namespace Server.Models
             this.LoginOperadoras = new List<LoginOperadora>();
             this.tbContaCorrentes = new List<tbContaCorrente>();
             this.tbLoginAdquirenteEmpresas = new List<tbLoginAdquirenteEmpresa>();
+            this.tbRecebimentoTEFs = new List<tbRecebimentoTEF>();
         }
 
         public int id_grupo { get; set; }
@@ -34,6 +35,7 @@ namespace Server.Models
         public Nullable<int> id_vendedor { get; set; }
         public bool fl_ativo { get; set; }
         public byte cdPrioridade { get; set; }
+        public string dsAPI { get; set; }
         public virtual ICollection<ConnectionString> ConnectionStrings { get; set; }
         public virtual ICollection<LogExceptionWinApp> LogExceptionWinApps { get; set; }
         public virtual ICollection<Bandeira> Bandeiras { get; set; }
@@ -50,5 +52,7 @@ namespace Server.Models
         public virtual webpages_Users Vendedor { get; set; }
         public virtual ICollection<tbContaCorrente> tbContaCorrentes { get; set; }
         public virtual ICollection<tbLoginAdquirenteEmpresa> tbLoginAdquirenteEmpresas { get; set; }
+        public virtual ICollection<tbRecebimentoTEF> tbRecebimentoTEFs { get; set; }
+        
     }
 }

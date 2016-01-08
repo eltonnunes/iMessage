@@ -22,12 +22,9 @@ namespace Server.Models.Mapping
             this.Property(t => t.dtCompetencia).HasColumnName("dtCompetencia");
             this.Property(t => t.nrCNPJ).HasColumnName("nrCNPJ");
             this.Property(t => t.cdAdquirente).HasColumnName("cdAdquirente");
-            this.Property(t => t.flStatusPagosAntecipacao).HasColumnName("flStatusPagosAntecipacao");
-            this.Property(t => t.flStatusPagosCredito).HasColumnName("flStatusPagosCredito");
-            this.Property(t => t.flStatusPagosDebito).HasColumnName("flStatusPagosDebito");
+            this.Property(t => t.flStatusVenda).HasColumnName("flStatusVenda");
+            this.Property(t => t.flStatusPagos).HasColumnName("flStatusPagos");
             this.Property(t => t.flStatusReceber).HasColumnName("flStatusReceber");
-            this.Property(t => t.flStatusVendasCredito).HasColumnName("flStatusVendasCredito");
-            this.Property(t => t.flStatusVendasDebito).HasColumnName("flStatusVendasDebito");
 
             // Relationships
             this.HasRequired(t => t.tbAdquirente)
