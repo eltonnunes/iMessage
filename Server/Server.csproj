@@ -523,6 +523,7 @@
     <Compile Include="Models\Mapping\tbRecebimentoTEFMap.cs" />
     <Compile Include="Models\Mapping\tbRecebimentoTituloMap.cs" />
     <Compile Include="Models\Mapping\tbRedeTefMap.cs" />
+    <Compile Include="Models\Mapping\tbResumoVendaMap.cs" />
     <Compile Include="Models\Mapping\tbSitucaoRedeTefMap.cs" />
     <Compile Include="Models\Mapping\tbTerminalLogicoMap.cs" />
     <Compile Include="Models\Mapping\tbTipoProdutoTefMap.cs" />
@@ -667,6 +668,7 @@
     <Compile Include="Models\tbRecebimentoTEF.cs" />
     <Compile Include="Models\tbRecebimentoTitulo.cs" />
     <Compile Include="Models\tbRedeTef.cs" />
+    <Compile Include="Models\tbResumoVenda.cs" />
     <Compile Include="Models\tbSituacaoRedeTef.cs" />
     <Compile Include="Models\tbTerminalLogico.cs" />
     <Compile Include="Models\tbTipoProdutoTef.cs" />
