@@ -38,6 +38,9 @@ namespace Server.Models.Mapping
             this.Property(t => t.dsModalidade).HasColumnName("dsModalidade");
             this.Property(t => t.qtTransacoes).HasColumnName("qtTransacoes");
             this.Property(t => t.vlTotalProcessado).HasColumnName("vlTotalProcessado");
+            this.Property(t => t.qtTransacoesCS).HasColumnName("qtTransacoesCS");
+            this.Property(t => t.vlTotalProcessadoCS).HasColumnName("vlTotalProcessadoCS");
+            this.Property(t => t.txAuditoria).HasColumnName("txAuditoria");
 
             // Relationships
             this.HasRequired(t => t.tbLogCargas)

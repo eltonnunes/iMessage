@@ -14,6 +14,9 @@ namespace Server.Models
         public string dsModalidade { get; set; }
         public Nullable<int> qtTransacoes { get; set; }
         public Nullable<decimal> vlTotalProcessado { get; set; }
+        public Nullable<int> qtTransacoesCS { get; set; }
+        public Nullable<decimal> vlTotalProcessadoCS { get; set; }
+        public string txAuditoria { get; set; }
         public virtual tbLogCarga tbLogCargas { get; set; }
     }
 }
