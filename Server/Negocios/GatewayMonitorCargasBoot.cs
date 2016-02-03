@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
@@ -169,6 +170,7 @@ namespace Server.Negocios.SignalR
 
             semaforoExecucao.WaitOne();
 
+            DateTime now = DateTime.Now;
 
             try
             {
@@ -193,6 +195,8 @@ namespace Server.Negocios.SignalR
                     //semaforo.WaitOne();
 
                     list = reader.Cast<IDataRecord>()
+                                    // Descarta as execuções que "dizem" estar em curso (status 0 ou 9) que começaram a mais de 48 horas da data corrente
+                                    .Where(e => (Convert.ToByte(e["flStatus"]) != 0 && Convert.ToByte(e["flStatus"]) != 9) || now.Subtract((DateTime)e["dtExecucaoIni"]).TotalHours < 48)
                                     .Select(e => new MonitorCargasBoot
                                     {
                                         idLogCargaDetalhe = Convert.ToInt32(e["idLogCargaDetalhe"]),
@@ -233,7 +237,8 @@ namespace Server.Negocios.SignalR
                                             cdAdquirente = Convert.ToInt32(e["cdAdquirente"]),
                                             nmAdquirente = Convert.ToString(e["nmAdquirente"])
                                         }
-                                    }).ToList<MonitorCargasBoot>();
+                                    })
+                                    .ToList<MonitorCargasBoot>();
 
                     alterouFiltro = false;
 
@@ -297,7 +302,7 @@ namespace Server.Negocios.SignalR
                             ultimaDataExecucaoFim = e.OrderByDescending(x => x.dtExecucaoFim)
                                                      .Select(x => x.dtExecucaoFim)
                                                      .FirstOrDefault(),
-                            prioridade = e.Where(x => x.flStatus == 0).Count() > 0 ? 1 : 0,
+                            prioridade = e.Where(x => x.flStatus == 0 || x.flStatus == 9).Count() > 0 ? 1 : 0,
                             grupoempresa = e.Select(x => x.grupoempresa).FirstOrDefault(),
                             empresa = e.Select(x => x.empresa).FirstOrDefault(),
                             tbAdquirente = e.Select(x => x.tbAdquirente).FirstOrDefault(),
@@ -308,44 +313,6 @@ namespace Server.Negocios.SignalR
                         .ThenBy(e => e.empresa.filial)
                         .ThenBy(e => e.tbAdquirente.nmAdquirente)
                         .ToList<MonitorCargasBootAgrupado>();
-
-            //semaforo.Release(1);
-
-            // Filtro de status?
-            //if (!filtro.Status.Equals(""))
-            //{
-            //    if (filtro.Status.Equals("-1"))
-            //    {
-            //        // Não carregado!
-            //        newList = newList.Where(e => e.tbLogCargas.Count() == 0)
-            //                         .OrderByDescending(e => e.prioridade)
-            //                         .ThenByDescending(e => e.ultimaDataExecucaoFim)
-            //                         .ThenBy(e => e.empresa.ds_fantasia)
-            //                         .ThenBy(e => e.empresa.filial)
-            //                         .ThenBy(e => e.tbAdquirente.nmAdquirente)
-            //                         .ToList<MonitorCargasBootAgrupado>();
-            //    }
-            //    else
-            //    {
-            //        newList = newList.Where(e => e.tbLogCargas.Any(l => l.statusExecution.Equals(filtro.Status)))
-            //                         .OrderByDescending(e => e.prioridade)
-            //                         .ThenByDescending(e => e.ultimaDataExecucaoFim)
-            //                         .ThenBy(e => e.empresa.ds_fantasia)
-            //                         .ThenBy(e => e.empresa.filial)
-            //                         .ThenBy(e => e.tbAdquirente.nmAdquirente)
-            //                         .ToList<MonitorCargasBootAgrupado>();
-            //    }
-            //}
-            //else
-            //{
-            // Sem filtro de status => apenas ordena
-            //newList = newList.OrderByDescending(e => e.prioridade)
-            //                 .ThenByDescending(e => e.ultimaDataExecucaoFim)
-            //                 .ThenBy(e => e.empresa.ds_fantasia)
-            //                 .ThenBy(e => e.empresa.filial)
-            //                 .ThenBy(e => e.tbAdquirente.nmAdquirente)
-            //                 .ToList<MonitorCargasBootAgrupado>();
-            //}
 
             if (Info.Equals(SqlNotificationInfo.Unknown)) return newList.ToList<dynamic>();
 
