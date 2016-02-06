@@ -129,7 +129,7 @@ namespace Server.Negocios.SignalR
                         card.tbAdquirente.nmAdquirente
 
                         FROM
-                        card.tbLogCargaDetalhe
+                        card.tbLogCargaDetalhe 
                         INNER JOIN card.tbLogCarga ON card.tbLogCargaDetalhe.idLogCarga = card.tbLogCarga.idLogCarga
                         INNER JOIN card.tbAdquirente ON card.tbLogCarga.cdAdquirente = card.tbAdquirente.cdAdquirente
                         INNER JOIN cliente.empresa ON card.tbLogCarga.nrCNPJ = cliente.empresa.nu_cnpj
