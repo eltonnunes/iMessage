@@ -67,11 +67,11 @@ namespace Server.Negocios.SignalR
                         card.tbAdquirente.nmAdquirente
 
                         FROM
-                        card.tbLogCargaDetalhe
-                        INNER JOIN card.tbLogCarga ON card.tbLogCargaDetalhe.idLogCarga = card.tbLogCarga.idLogCarga
-                        INNER JOIN card.tbAdquirente ON card.tbLogCarga.cdAdquirente = card.tbAdquirente.cdAdquirente
-                        INNER JOIN cliente.empresa ON card.tbLogCarga.nrCNPJ = cliente.empresa.nu_cnpj
-                        INNER JOIN cliente.grupo_empresa ON cliente.empresa.id_grupo = cliente.grupo_empresa.id_grupo                        
+                        card.tbLogCargaDetalhe (NOLOCK)
+                        INNER JOIN card.tbLogCarga (NOLOCK) ON card.tbLogCargaDetalhe.idLogCarga = card.tbLogCarga.idLogCarga
+                        INNER JOIN card.tbAdquirente (NOLOCK) ON card.tbLogCarga.cdAdquirente = card.tbAdquirente.cdAdquirente
+                        INNER JOIN cliente.empresa (NOLOCK) ON card.tbLogCarga.nrCNPJ = cliente.empresa.nu_cnpj
+                        INNER JOIN cliente.grupo_empresa (NOLOCK) ON cliente.empresa.id_grupo = cliente.grupo_empresa.id_grupo                        
 
                         WHERE YEAR(card.tbLogCarga.dtCompetencia) = " + DateTime.Now.Year +
                         @" AND MONTH(card.tbLogCarga.dtCompetencia) = " + DateTime.Now.Month;
@@ -98,6 +98,9 @@ namespace Server.Negocios.SignalR
             // YYYYMM
             int ano = filtro.Data.Length >= 4 ? Convert.ToInt32(filtro.Data.Substring(0, 4)) : DateTime.Now.Year;
             int mes = filtro.Data.Length >= 6 ? Convert.ToInt32(filtro.Data.Substring(4, 2)) : DateTime.Now.Month;
+
+            DateTime dataIni = Convert.ToDateTime("01/" + mes + "/" + ano);
+            DateTime dataFim = Convert.ToDateTime(DateTime.DaysInMonth(ano, mes) + "/" + mes + "/" + ano);
 
             script = @"
                         SELECT
@@ -129,14 +132,16 @@ namespace Server.Negocios.SignalR
                         card.tbAdquirente.nmAdquirente
 
                         FROM
-                        card.tbLogCargaDetalhe 
-                        INNER JOIN card.tbLogCarga ON card.tbLogCargaDetalhe.idLogCarga = card.tbLogCarga.idLogCarga
-                        INNER JOIN card.tbAdquirente ON card.tbLogCarga.cdAdquirente = card.tbAdquirente.cdAdquirente
-                        INNER JOIN cliente.empresa ON card.tbLogCarga.nrCNPJ = cliente.empresa.nu_cnpj
-                        INNER JOIN cliente.grupo_empresa ON cliente.empresa.id_grupo = cliente.grupo_empresa.id_grupo                        
+                        card.tbLogCargaDetalhe (NOLOCK) 
+                        INNER JOIN card.tbLogCarga (NOLOCK) ON card.tbLogCargaDetalhe.idLogCarga = card.tbLogCarga.idLogCarga
+                        INNER JOIN card.tbAdquirente (NOLOCK) ON card.tbLogCarga.cdAdquirente = card.tbAdquirente.cdAdquirente
+                        INNER JOIN cliente.empresa (NOLOCK) ON card.tbLogCarga.nrCNPJ = cliente.empresa.nu_cnpj
+                        INNER JOIN cliente.grupo_empresa (NOLOCK) ON cliente.empresa.id_grupo = cliente.grupo_empresa.id_grupo                        
 
-                        WHERE YEAR(card.tbLogCarga.dtCompetencia) = " + ano +
-                        @" AND MONTH(card.tbLogCarga.dtCompetencia) = " + mes;
+                        WHERE card.tbLogCarga.dtCompetencia BETWEEN '" + DatabaseQueries.GetDate(dataIni) + "' AND '" + DatabaseQueries.GetDate(dataFim) + " 23:59:00'";
+
+                        //WHERE YEAR(card.tbLogCarga.dtCompetencia) = " + ano +
+                        //@" AND MONTH(card.tbLogCarga.dtCompetencia) = " + mes;
 
             // Usuário está amarrado a um grupo empresa?
             Int32 IdGrupo = Permissoes.GetIdGrupo(filtro.Token);

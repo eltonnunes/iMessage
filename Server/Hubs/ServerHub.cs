@@ -5,6 +5,10 @@ using Server.Models.Object;
 using Server.Bibliotecas;
 using System.Web;
 using System.Net;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Server.Hubs
 {
@@ -13,7 +17,7 @@ namespace Server.Hubs
     {
         private GatewayMonitorCargas monitorCargas;
         private GatewayMonitorCargasBoot monitorCargasBoot;
-        private GatewayFilaBootICard filaBootICard;
+        //private GatewayFilaBootICard filaBootICard;
 
         //[Authorize]
         public void obtemLista(FiltroMonitorCargas filtro)
@@ -44,7 +48,7 @@ namespace Server.Hubs
                 //throw new HttpException((int)HttpStatusCode.Unauthorized, "Não Autorizado");
             }*/
 
-            filtro.Token = Context.QueryString["token"];
+            filtro.Token = Context.QueryString["token"];            
 
             if (monitorCargasBoot == null) monitorCargasBoot = new GatewayMonitorCargasBoot(Context.ConnectionId, filtro);
             else monitorCargasBoot.setFiltro(Context.ConnectionId, filtro);
@@ -63,5 +67,21 @@ namespace Server.Hubs
 
         //    filaBootICard.enviaLista();
         //}
+
+
+
+
+        public override Task OnConnected()
+        {
+            return base.OnConnected();
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            //semaforo.WaitOne();
+            //connections.Remove(Context.ConnectionId);
+            //semaforo.Release(1);
+            return base.OnDisconnected(stopCalled);
+        }
     }
 }
